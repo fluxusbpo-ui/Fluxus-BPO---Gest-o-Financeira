@@ -1,0 +1,37 @@
+name: Supabase Migration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      PG_CONN: ${{ secrets.PG_CONN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3 postgresql-client
+
+      - name: Apply SQL migrations
+        run: |
+          psql "$PG_CONN" -f "supabase/migrations/2025120301_create_empresas.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120302_create_planos.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120303_create_usuarios.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120304_create_assinaturas.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120402_add_email_tokens_and_flag.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120305_update_planos_schema.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120501_add_cpf_to_usuarios.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120502_add_owner_empresa_to_empresas.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120401_add_checkout_sessionid_to_assinaturas.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120601_rls_policies.sql"
+          psql "$PG_CONN" -f "supabase/migrations/2025120602_add_data_to_empresas.sql"
+
+      - name: Import data from SQLite to Postgres
+        env:
+          PG_CONN: ${{ secrets.PG_CONN }}
+        run: bash scripts/ci_migrate.sh

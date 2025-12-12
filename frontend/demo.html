@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>G&P Finance — Demonstração do Sistema</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      .demo-hero { padding: 64px 0; text-align: center; }
+      .demo-box { border: 2px dashed #cfe2ff; background:#f7fbff; padding:48px; border-radius:8px; max-width:980px; margin:24px auto; color:#0f2b55 }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/index.html" aria-label="Voltar para a página inicial">
+          <!-- inline SVG logo (same as on index) -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#1e59d6"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#1e59d6"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#1e59d6"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#1e59d6"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2b55">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#0f2b55">Finance</text>
+            </g>
+          </svg>
+        </a>
+        <nav class="main-nav">
+          <a href="/index.html#home">Início</a>
+          <a href="/index.html#solutions">Soluções</a>
+          <a href="/index.html#plans">Planos</a>
+          <a href="/demo.html">Sistema G&amp;P</a>
+          <a href="/contact.html">Contato</a>
+        </nav>
+        <div class="actions">
+          <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+          <a class="btn btn-primary" href="/login.html">Entrar</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="demo-hero container">
+        <h1>Demonstração do Sistema G&amp;P</h1>
+        <p class="muted-lead">Esta página é pública e serve para apresentar como o sistema funcionará. Use-a para navegar por protótipos, capturas de tela e vídeos demonstrativos.</p>
+        <div class="demo-box" role="region" aria-label="Área de demonstração">
+          <p style="font-size:18px; margin:0">Conteúdo de demonstração será colocado aqui. Por enquanto a página está em branco — você pode adicionar protótipos, imagens ou um iframe com uma demo interativa.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div class="footer-left">© G&amp;P Finance — Demonstração pública</div>
+        <div class="footer-center" aria-label="Links institucionais">
+          <a href="/juridico.html" class="footer-link">Jurídico</a>
+          <a href="/termos-de-servico.html" class="footer-link">Termos de serviço</a>
+        </div>
+        <div class="footer-right" aria-label="Redes sociais">
+          <a href="#" class="social-icon" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

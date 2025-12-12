@@ -1,0 +1,24 @@
+{
+  "name": "gp-finance-backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env PORT=5000 nodemon src/index.js",
+    "start": "node src/index.js",
+    "seed:plans": "node ../scripts/seed_plans.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    
+    "@supabase/supabase-js": "^2.26.0",
+    "uuid": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    
+    "nodemailer": "^6.9.4",
+    "stripe": "^11.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "cross-env": "^7.0.3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "gp-finance-root",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "do:frontend": "node ./scripts/run-frontend.js"
+    ,"smoke:functions": "node ./scripts/smoke_test_functions.js"
+    ,"serve:functions": "supabase functions serve"
+  },
+  "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "node-fetch": "^2.6.7"
+    }
+}
