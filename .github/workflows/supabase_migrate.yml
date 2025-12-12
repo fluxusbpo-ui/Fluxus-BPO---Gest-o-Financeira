@@ -9,6 +9,7 @@ jobs:
     env:
       PG_CONN: ${{ secrets.PG_CONN }}
       APPLY_RLS: ${{ secrets.APPLY_RLS }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,12 +78,25 @@ jobs:
           dbname=$(echo "$hostportdb" | cut -d/ -f2-)
           port=$(echo "$hostport" | cut -d: -f2)
           export PGPASSWORD="$password"
-          if [ "${DB_REACHABLE:-}" = "ipv4" ]; then
+          if [ "${DB_REACHABLE:-}" = "ipv4" ] || [ "${DB_REACHABLE:-}" = "ipv6" ]; then
             hostip="$DB_IPV4"
+            if [ "${DB_REACHABLE:-}" = "ipv6" ]; then
+              hostip="$DB_IPV6"
+            fi
           elif [ "${DB_REACHABLE:-}" = "ipv6" ]; then
             hostip="$DB_IPV6"
           else
-            echo "No reachable DB IP found, aborting"; exit 1
+            echo "No reachable DB IP found, attempting Supabase CLI fallback"
+            # Install supabase CLI via npm and attempt to push migrations using the CLI
+            npm install -g supabase
+            PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's@https?://@@' | cut -d '.' -f1)
+            echo "Using Project ref: $PROJECT_REF"
+            supabase login --access-token "$SUPABASE_ACCESS_TOKEN"
+            supabase link --project-ref "$PROJECT_REF"
+            # Push local migrations using supabase CLI
+            supabase db push --project-ref "$PROJECT_REF" --no-verify || {
+              echo "Supabase CLI fallback failed"; exit 1
+            }
           fi
           echo "Connecting to DB via host ip: $hostip port: $port user: $username db: $dbname"
           psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120301_create_empresas.sql"
