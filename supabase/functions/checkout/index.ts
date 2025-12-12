@@ -1,12 +1,13 @@
 // Supabase Edge Function: checkout
 // POST to create a checkout session (uses Stripe if configured, otherwise returns a fake session)
 import { serve } from 'https://deno.land/std@0.204.0/http/server.ts';
+import { getEnv } from '../_env.ts';
 
 serve(async (req) => {
   try {
     if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
-    const STRIPE_KEY = Deno.env.get('STRIPE_KEY');
+    const SUPABASE_URL = getEnv('SUPABASE_URL');
+    const STRIPE_KEY = getEnv('STRIPE_KEY');
     const body = await req.json();
     const { empresaId, planId, success_url, cancel_url } = body || {};
     if (!empresaId || !planId) return new Response(JSON.stringify({ error: 'empresaId and planId required' }), { status: 400 });

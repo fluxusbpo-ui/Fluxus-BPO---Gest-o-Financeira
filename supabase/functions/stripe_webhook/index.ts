@@ -7,7 +7,7 @@ serve(async (req) => {
   try {
     const SUPABASE_URL = getEnv('SUPABASE_URL');
     const SUPABASE_SERVICE_ROLE_KEY = getEnv('SUPABASE_SERVICE_ROLE_KEY');
-    const STRIPE_WEBHOOK_SECRET = Deno.env.get('STRIPE_WEBHOOK_SECRET');
+    const STRIPE_WEBHOOK_SECRET = getEnv('STRIPE_WEBHOOK_SECRET');
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 500 });
 
     const body = await req.text();
