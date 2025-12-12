@@ -18,6 +18,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sqlite3 postgresql-client
 
+      - name: Diagnose DB connectivity
+        run: |
+          echo "SUPABASE_URL=$SUPABASE_URL"
+          echo "PG_CONN=${PG_CONN}" | sed -E 's/(password=)[^ ]+/\1***REDACTED***/g'
+          echo "Resolving DNS records for DB host..."
+          host=$(echo "$PG_CONN" | sed -E 's@.*@(.*):(.*)@\1@' | sed -E 's@.*//@@' | sed -E 's/:.*$//' )
+          echo "DB host: $host"
+          apt-get update && apt-get install -y dnsutils iproute2 netcat
+          echo "A records:"; dig +short A $host || true
+          echo "AAAA records:"; dig +short AAAA $host || true
+          echo "Connectivity checks:";
+          echo "  IPv4 (psql -4) ->"; psql -4 -c '\l' "$PG_CONN" >/dev/null 2>&1 && echo "OK (IPv4)" || echo "FAILED (IPv4)";
+          echo "  IPv6 (psql -6) ->"; psql -6 -c '\l' "$PG_CONN" >/dev/null 2>&1 && echo "OK (IPv6)" || echo "FAILED (IPv6)";
+
       - name: Apply SQL migrations
         run: |
           # Force IPv4 and stop on error for clearer failures on GitHub Actions runners
