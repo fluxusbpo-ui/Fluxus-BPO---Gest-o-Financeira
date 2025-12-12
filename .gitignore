@@ -1,0 +1,15 @@
+node_modules/
+frontend/node_modules/
+*.log
+*.env
+supabase/.branches/
+supabase/.temp/
+db.sqlite3
+.DS_Store
+dist/
+build/
+/.vscode/
+/.idea/
+npm-debug.log
+yarn-error.log
+package-lock.json
