@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>G&P Finance — Página</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/demo.html" aria-label="Abrir Demonstração do sistema">
+          <!-- inline SVG logo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#1e59d6"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#1e59d6"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#1e59d6"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#1e59d6"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2b55">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#0f2b55">Finance</text>
+            </g>
+          </svg>
+        </a>
+        <nav class="main-nav">
+          <a href="/index.html#home">Início</a>
+          <a href="/index.html#solutions">Soluções</a>
+          <a href="/index.html#plans">Planos</a>
+          <a href="/demo.html">Sistema G&amp;P</a>
+          <a href="/contact.html">Contato</a>
+        </nav>
+        <div class="actions">
+          <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+          <a class="btn btn-primary" href="/login.html">Entrar</a>
+        </div>
+        <button class="header-toggle" aria-expanded="false" aria-label="Abrir menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <div class="mobile-panel" aria-hidden="true">
+          <nav class="main-nav mobile">
+            <a href="/index.html#home">Início</a>
+            <a href="/index.html#solutions">Soluções</a>
+            <a href="/index.html#plans">Planos</a>
+            <a href="/demo.html">Sistema G&amp;P</a>
+            <a href="/contact.html">Contato</a>
+          </nav>
+          <div class="actions mobile">
+            <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+            <a class="btn btn-primary" href="/login.html">Entrar</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Bloco 1: Hero -->
+      <section id="home" class="hero">
+        <div class="container hero-inner">
+          <div class="hero-left">
+            <h1>G&amp;P Finance — Sistema completo para você</h1>
+            <p class="lead">Uma plataforma pensada para transformar operações financeiras em vantagem competitiva. Integramos vendas, compras, finanças e contabilidade com automações que reduzem trabalho manual, aumentam a previsibilidade e garantem conformidade — ideal para empresas que querem crescer com segurança.</p>
+
+            <div class="features-list">
+              <div class="feature">
+                <div class="icon">⚡</div>
+                <div>
+                  <strong>Automação de lançamentos</strong>
+                  <p>— elimina retrabalho e acelera fechamento financeiro.</p>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="icon">👁️</div>
+                <div>
+                  <strong>Controle de fluxo de caixa</strong>
+                  <p>— visibilidade em tempo real para decisões seguras.</p>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="icon">📦</div>
+                <div>
+                  <strong>Gestão integrada de pedidos</strong>
+                  <p>— do pedido ao estoque com processos aprovados.</p>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="icon">📑</div>
+                <div>
+                  <strong>Gerencie seus leads</strong>
+                  <p>— capture, qualifique e priorize leads para acelerar conversões.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- cartão de destaque removido da coluna direita; será convertido em subtítulo abaixo dos cards -->
+          <div class="hero-right" aria-hidden="true">
+            <div class="hero-graphics" aria-hidden="true">
+              <!-- Left graphic: line + bars -->
+              <svg class="hero-graphic hero-graphic-left" viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <defs>
+                  <linearGradient id="lg1" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#fff" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#fff" stop-opacity="0.6" />
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="260" height="140" fill="none" />
+                <!-- Bars -->
+                <g fill="#ffffff" opacity="0.16">
+                  <rect x="24" y="70" width="18" height="50" rx="3" />
+                  <rect x="64" y="50" width="18" height="70" rx="3" />
+                  <rect x="104" y="30" width="18" height="90" rx="3" />
+                  <rect x="144" y="60" width="18" height="60" rx="3" />
+                  <rect x="184" y="45" width="18" height="75" rx="3" />
+                </g>
+                <!-- Line chart -->
+                <polyline points="12,100 36,88 60,72 84,62 108,48 132,54 156,44 180,50 204,38 228,46" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" opacity="0.22" />
+                <circle cx="12" cy="100" r="2.6" fill="#fff" opacity="0.24" />
+                <circle cx="60" cy="72" r="2.6" fill="#fff" opacity="0.24" />
+                <circle cx="108" cy="48" r="2.6" fill="#fff" opacity="0.24" />
+                <circle cx="156" cy="44" r="2.6" fill="#fff" opacity="0.24" />
+                <circle cx="204" cy="38" r="2.6" fill="#fff" opacity="0.24" />
+              </svg>
+
+              <!-- Right graphic: pie + indicator -->
+              <svg class="hero-graphic hero-graphic-right" viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <rect x="0" y="0" width="260" height="140" fill="none" />
+                <!-- Pie chart -->
+                <g transform="translate(50,40) scale(0.9)">
+                  <path d="M40 0 A40 40 0 0 1 0 40 L0 0 Z" fill="#fff" opacity="0.18" />
+                  <path d="M0 40 A40 40 0 0 1 -28 36 L0 40 Z" fill="#fff" opacity="0.12" transform="translate(48,10)" />
+                  <circle cx="48" cy="10" r="40" fill="none" stroke="#fff" stroke-width="2" opacity="0.12" />
+                </g>
+                <!-- Indicator (gauge) -->
+                <g transform="translate(160,72)">
+                  <path d="M-36 0 A36 36 0 0 1 36 0" fill="none" stroke="#fff" stroke-width="3" opacity="0.14" stroke-linecap="round" />
+                  <line x1="0" y1="0" x2="20" y2="-12" stroke="#fff" stroke-width="2.2" opacity="0.22" stroke-linecap="round" />
+                  <circle cx="0" cy="0" r="3" fill="#fff" opacity="0.22" />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+          <div class="hero-subtext">
+            <p class="muted-lead">Experimente um sistema que centraliza operações e reduz custos operacionais</p>
+            <p class="muted-small">— pensado para times que precisam de precisão e velocidade.</p>
+          </div>
+      </section>
+
+      <!-- Bloco 2: Quadros de recursos (cards) -->
+      <section id="solutions" class="solutions container">
+        <div class="cards-grid">
+          <div class="card">
+            <h4>Gestão de Vendas &amp; CRM</h4>
+            <p class="card-intro">Transforme oportunidades em clientes com processos previsíveis. Desenvolvemos o funil, as ações e os relatórios para você fechar mais — sempre.</p>
+            <ul>
+              <li>
+                <strong>Funil de Vendas</strong>
+                <p>Visualize passos, identifique gargalos e otimize conversões.</p>
+              </li>
+              <li>
+                <strong>Controle do Pipeline</strong>
+                <p>Tenha visão em tempo real do progresso de cada negociação.</p>
+              </li>
+              <li>
+                <strong>Cadastro de leads</strong>
+                <p>Captação e qualificação automática em um só lugar.</p>
+              </li>
+              <li>
+                <strong>Automação de follow-up</strong>
+                <p>Sequências inteligentes que recuperam oportunidades esquecidas.</p>
+              </li>
+              <li>
+                <strong>Relatórios inteligentes</strong>
+                <p>Insights que orientam cada decisão comercial.</p>
+              </li>
+            </ul>
+            <a class="link" href="#">Ver protótipo →</a>
+          </div>
+          <div class="card">
+            <h4>Compras &amp; Pedidos</h4>
+            <p class="card-intro">Controle total do ciclo de compras: da requisição ao pedido e ao estoque — para reduzir custo, aumentar compliance e acelerar entregas.</p>
+            <ul>
+              <li>
+                <strong>Requisições automatizadas</strong>
+                <p>Solicitações com aprovação e regras corporativas integradas.</p>
+              </li>
+              <li>
+                <strong>Aprovações em fluxo</strong>
+                <p>Gatekeeping que reduz erros e acelera decisões.</p>
+              </li>
+              <li>
+                <strong>Gestão de fornecedores</strong>
+                <p>Contratos, rating e histórico de performance centralizados.</p>
+              </li>
+              <li>
+                <strong>Pedidos &amp; Estoque conectados</strong>
+                <p>Pedidos geram atualização automática do inventário.</p>
+              </li>
+              <li>
+                <strong>Economia e controle</strong>
+                <p>Reduza desperdício e melhore negociações com dados precisos.</p>
+              </li>
+            </ul>
+            <a class="link" href="#">Ver protótipo →</a>
+          </div>
+          <div class="card">
+            <h4>Gestão Financeira</h4>
+            <p class="card-intro">Controle o fluxo de caixa e tome decisões com segurança — tudo com automação de conciliações e relatórios prontos para ação.</p>
+            <ul>
+              <li>
+                <strong>Contas a pagar/receber</strong>
+                <p>Calendário financeiro unificado e previsões automáticas.</p>
+              </li>
+              <li>
+                <strong>Fluxo de caixa em tempo real</strong>
+                <p>Visibilidade imediata sobre disponibilidade e risco.</p>
+              </li>
+              <li>
+                <strong>Conciliações automáticas</strong>
+                <p>Menos trabalho manual, mais confiança nos números.</p>
+              </li>
+              <li>
+                <strong>Relatórios gerenciais</strong>
+                <p>Painéis prontos para apresentação e decisão.</p>
+              </li>
+            </ul>
+            <a class="link" href="#">Ver protótipo →</a>
+          </div>
+          <div class="card">
+            <h4>Contabilidade</h4>
+            <p class="card-intro">Um núcleo contábil que trabalha junto com o financeiro — lançamentos, planos e relatórios fiscais prontos para auditoria.</p>
+            <ul>
+              <li>
+                <strong>Plano contábil integrado</strong>
+                <p>Estrutura que acompanha crescimentos e reestruturações.</p>
+              </li>
+              <li>
+                <strong>Lançamentos automáticos</strong>
+                <p>Menos retrabalho, mais consistência e auditabilidade.</p>
+              </li>
+              <li>
+                <strong>Relatórios fiscais</strong>
+                <p>Conformidade preparada para obrigações e auditorias.</p>
+              </li>
+              <li>
+                <strong>Export e integração</strong>
+                <p>Facilite apontamentos para ERPs e contabilidade externa.</p>
+              </li>
+            </ul>
+            <a class="link" href="#">Ver protótipo →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 3: Ideal para -->
+      <section class="ideal container">
+        <h3>Ideal para</h3>
+        <div class="ideal-grid">
+          <div class="ideal-card dark">
+            <h5>Sua Empresa</h5>
+            <p>Pequenas e médias empresas que querem automatizar rotinas financeiras e ganhar previsibilidade.</p>
+          </div>
+          <div class="ideal-card dark">
+            <h5>Multi-empresas</h5>
+            <p>Regras de acesso para grupos e franquias — controle centralizado e operações locais.</p>
+          </div>
+          <div class="ideal-card dark">
+            <h5>BPOs Financeiros</h5>
+            <p>Gestão financeira facilitada para BPOs — eficiência, conformidade e maior rastreabilidade.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 4: Planos -->
+      <section id="plans" class="plans container">
+        <h3>Planos</h3>
+        <div class="plans-grid">
+          <div class="plan">
+            <h4>FREE</h4>
+            <div class="price">R$0</div>
+            <ul class="plan-features">
+              <li><span class="check">✓</span> Até 1 empresa</li>
+              <li><span class="check">✓</span> Até 2 usuários</li>
+              <li><span class="check">✓</span> Gestão de vendas &amp; CRM</li>
+              <li><span class="check">✓</span> Gestão de Compras</li>
+              <li><span class="check">✓</span> Gestão Financeira</li>
+              <li><span class="cross">✕</span> Conciliação bancária integrada</li>
+              <li><span class="cross">✕</span> Relatórios avançados</li>
+              <li><span class="cross">✕</span> Gestão de documentos fiscais</li>
+              <li><span class="cross">✕</span> IA de análise (G&amp;P Insights)</li>
+            </ul>
+            <div class="plan-footer">
+              <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+            </div>
+          </div>
+
+          <div class="plan featured">
+            <h4>ESSENCIAL</h4>
+            <div class="price">R$99 / mês</div>
+            <ul class="plan-features">
+              <li><span class="check">✓</span> Até 1 Empresa ativa</li>
+              <li><span class="check">✓</span> Até 3 usuários</li>
+              <li><span class="check">✓</span> + R$50 por empresa adicional</li>
+              <li><span class="check">✓</span> Gestão de vendas &amp; CRM</li>
+              <li><span class="check">✓</span> Gestão de Compras</li>
+              <li><span class="check">✓</span> Gestão Financeira</li>
+              <li><span class="check">✓</span> Conciliação bancária integrada</li>
+              <li><span class="check">✓</span> Relatórios avançados</li>
+              <li><span class="check">✓</span> Gestão de documentos fiscais</li>
+              <li><span class="cross">✕</span> IA de análise (G&amp;P Insights)</li>
+            </ul>
+            <div class="plan-footer">
+              <a class="btn btn-primary" href="./register.html?plan=ESSENCIAL">Assinar</a>
+            </div>
+          </div>
+
+          <div class="plan">
+            <h4>PRO</h4>
+            <div class="price">R$199 / mês</div>
+            <ul class="plan-features">
+              <li><span class="check">✓</span> Até 5 Empresas Ativas</li>
+              <li><span class="check">✓</span> Até 10 usuários</li>
+              <li><span class="check">✓</span> + R$35 por empresa adicional</li>
+              <li><span class="check">✓</span> Gestão de vendas &amp; CRM</li>
+              <li><span class="check">✓</span> Gestão de Compras</li>
+              <li><span class="check">✓</span> Gestão Financeira</li>
+              <li><span class="check">✓</span> Conciliação bancária integrada</li>
+              <li><span class="check">✓</span> Relatórios avançados</li>
+              <li><span class="check">✓</span> Gestão de documentos fiscais</li>
+              <li><span class="check">✓</span> IA de análise (G&amp;P Insights)</li>
+            </ul>
+            <div class="plan-footer">
+              <a class="btn btn-primary" href="./register.html?plan=PRO">Assinar</a>
+            </div>
+          </div>
+
+          <div class="plan">
+            <h4>ENTERPRISE</h4>
+            <div class="price">R$499 / mês</div>
+            <ul class="plan-features">
+              <li><span class="check">✓</span> Até 20 Empresas Ativas</li>
+              <li><span class="check">✓</span> Usuários ilimitados</li>
+              <li><span class="check">✓</span> + R$15 por empresa adicional</li>
+              <li><span class="check">✓</span> Gestão de vendas &amp; CRM</li>
+              <li><span class="check">✓</span> Gestão de Compras</li>
+              <li><span class="check">✓</span> Gestão Financeira</li>
+              <li><span class="check">✓</span> Conciliação bancária integrada</li>
+              <li><span class="check">✓</span> Relatórios avançados</li>
+              <li><span class="check">✓</span> Gestão de documentos fiscais</li>
+              <li><span class="check">✓</span> IA de análise (G&amp;P Insights)</li>
+              <li><span class="check">✓</span> Suporte prioritário e SLA</li>
+            </ul>
+            <div class="plan-footer">
+              <a class="btn btn-primary" href="./register.html?plan=ENTERPRISE">Assinar</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div class="footer-left">© G&amp;P Finance — Gestão Financeira Inteligente</div>
+
+        <div class="footer-center" aria-label="Links institucionais">
+          <a href="/juridico.html" class="footer-link">Jurídico</a>
+          <a href="/termos-de-servico.html" class="footer-link">Termos de serviço</a>
+          <a href="/politica-de-privacidade.html" class="footer-link">Nossa política de privacidade</a>
+          <a href="/opcoes-de-privacidade.html" class="footer-link">Suas opções de privacidade</a>
+          <span class="footer-copy">Todos os direitos reservados © G&amp;P Finance</span>
+        </div>
+
+        <div class="footer-right" aria-label="Redes sociais">
+          <a href="#" class="social-icon" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="3" fill="#153263"/>
+              <path d="M6.94 8.5H4.5V18h2.44V8.5zM5.72 6.9c.78 0 1.26-.52 1.26-1.17 0-.65-.48-1.17-1.26-1.17-.77 0-1.26.52-1.26 1.17 0 .65.49 1.17 1.26 1.17zM19 18h-2.44v-4c0-1.01-.02-2.31-1.41-2.31-1.42 0-1.64 1.11-1.64 2.26V18H11.5V8.5h2.34v1.26h.03c.33-.62 1.14-1.27 2.35-1.27 2.51 0 2.97 1.65 2.97 3.79V18z" fill="#fff"/>
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" fill="#153263"/><circle cx="12" cy="12" r="3.2" fill="#fff"/><circle cx="17.2" cy="6.8" r="0.8" fill="#fff"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Facebook" title="Facebook">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="2" fill="#153263"/><path d="M13.5 8H15V5.8C14.6 5.7 13.3 5.5 12 5.5C9.8 5.5 8.5 6.8 8.5 9V11H6.5V14H8.5V19H11.5V14H13.5L14 11H11.5V9C11.5 8.6 11.6 8.5 12.2 8.5H13.5V8Z" fill="#fff"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="X" title="X">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="2" fill="#153263"/><path d="M7 8L17 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M17 8L7 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

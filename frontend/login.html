@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — G&P Finance (placeholder)</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      .placeholder { display:flex;align-items:center;justify-content:center;height:calc(100vh - var(--header-height));flex-direction:column;padding:24px;text-align:center }
+      .placeholder h1{font-size:20px;margin:0 0 12px}
+      .placeholder p{color:var(--muted)}
+      .placeholder a.btn {margin-top:16px}
+      /* Login page header/footer overrides: solid blue header with only logo, solid blue footer */
+      body.login-page .site-header { background: var(--blue-900) !important; border-bottom: none !important; }
+      body.login-page .site-header .container { padding: 0 24px !important; }
+      body.login-page .site-header .logo svg text { fill: #e6f1ff !important; }
+      body.login-page .site-header .actions, body.login-page .site-header .main-nav { display: none !important; }
+      body.login-page { padding-top: 56px !important; }
+      body.login-page .site-footer { background: var(--blue-900) !important; color: #e6f1ff; border-top: none; position:fixed; left:0; right:0; bottom:0; height:56px; display:flex; align-items:center }
+      body.login-page .site-footer .footer-left, body.login-page .site-footer .footer-center .footer-link { color: #e6f1ff !important }
+      /* Make password input in login form match email width and styling */
+      .password-field { position:relative }
+      #loginForm input[type="password"] { width:100%; padding:10px 40px 10px 12px; border-radius:8px; border:1px solid #e6eef6; background:#fff; color:#0f172a; box-shadow:none; outline:none; font-size:14px }
+      #loginForm input[type="password"]:focus { box-shadow:0 6px 18px rgba(30,89,214,0.06); border-color:var(--accent) }
+      .password-toggle { position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent;border:0;padding:6px;border-radius:6px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center }
+      .password-toggle svg{ width:18px;height:18px }
+
+      /* Recover options: custom radio buttons and nicer inputs */
+      .recover-options { display:flex; gap:8px; align-items:center }
+      .recover-option { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:8px; background:#fff; border:1px solid #e6eef6; cursor:pointer; color:#153263; box-shadow:0 6px 18px rgba(13,32,63,0.04); }
+      .recover-option input[type="radio"] { display:none }
+      .recover-option .custom-radio { width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1; display:inline-block; box-sizing:border-box }
+      .recover-option input[type="radio"]:checked + .custom-radio { background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 6px rgba(30,89,214,0.06) }
+      .recover-option .recover-label-text { font-size:14px }
+
+      /* recovery input styling */
+      #recoverContainer input[type="email"], #recoverContainer input[type="tel"] { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e6eef6; background:#fff; color:#0f172a; box-shadow:none; outline:none; font-size:14px }
+      #recoverContainer input[type="email"]:focus, #recoverContainer input[type="tel"]:focus { box-shadow:0 6px 18px rgba(30,89,214,0.06); border-color:var(--accent) }
+
+      /* ghost button slight tweak for recovery buttons */
+      .btn-ghost { background:#fff; border:1px solid #e6eef6; color:var(--blue-700); padding:8px 12px; border-radius:8px }
+    </style>
+  </head>
+  <body class="login-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/index.html" aria-label="Voltar para a página inicial">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#1e59d6"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#1e59d6"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#1e59d6"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#1e59d6"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#e6f1ff">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#e6f1ff">Finance</text>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main style="min-height:calc(100vh - var(--header-height) - 56px);display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)">
+      <div class="contact-card" style="max-width:420px;width:100%;padding:22px;border-radius:12px">
+        <h1 style="margin:0 0 6px">Entrar</h1>
+        <p style="margin:0 0 12px;color:var(--muted)">Use seu e‑mail e senha para acessar sua conta.</p>
+
+        <form id="loginForm" class="contact-form" style="margin-top:8px">
+          <label>
+            E-mail
+            <input type="email" name="email" id="loginEmail" required />
+          </label>
+
+          <label>
+            Senha
+            <div class="password-field">
+              <input type="password" name="senha" id="loginSenha" required />
+              <button type="button" id="togglePassword" class="password-toggle" aria-label="Mostrar senha" title="Mostrar senha">
+                <!-- eye icon -->
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="#153263" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#153263" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </label>
+
+          <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <a class="btn btn-outline" href="/index.html">Voltar</a>
+            <div id="loginStatus" style="margin-left:auto;font-weight:600;color:var(--blue-700)"></div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+            <button type="button" class="btn btn-ghost" id="recuperarSenhaLink">Recuperar senha</button>
+            <button type="button" class="btn btn-ghost" id="recuperarUsuarioLink">Recuperar usuário</button>
+          </div>
+        </form>
+
+        <!-- Recuperar modal simples (inline) -->
+        <div id="recoverContainer" style="display:none;margin-top:16px;padding:12px;border-radius:8px;background:#f8fafc;border:1px solid #eef2ff">
+          <h3 id="recoverTitle" style="margin:0 0 8px;font-size:16px">Recuperar</h3>
+          <p id="recoverSubtitle" style="margin:0 0 8px;color:var(--muted)">Escolha usar e‑mail ou telefone</p>
+
+          <div id="recoverByRow" class="recover-options" style="margin-bottom:8px">
+            <label class="recover-option"><input type="radio" name="recoverBy" value="email" checked /><span class="custom-radio" aria-hidden="true"></span><span class="recover-label-text">E‑mail</span></label>
+            <label class="recover-option"><input type="radio" name="recoverBy" value="phone" /><span class="custom-radio" aria-hidden="true"></span><span class="recover-label-text">Telefone</span></label>
+          </div>
+
+          <div id="recoverEmailRow">
+            <label>E‑mail de recuperação<input type="email" id="recoverEmail" style="width:100%" /></label>
+          </div>
+          <div id="recoverPhoneRow" style="display:none">
+            <label>Telefone de recuperação
+              <div style="display:flex;gap:8px;align-items:center">
+                <select id="recoverDdiSelect" class="ddi-select" style="min-width:86px">
+                  <option value="55" selected>🇧🇷 +55</option>
+                  <option value="1">🇺🇸 +1</option>
+                  <option value="44">🇬🇧 +44</option>
+                  <option value="351">🇵🇹 +351</option>
+                  <option value="34">🇪🇸 +34</option>
+                  <option value="33">🇫🇷 +33</option>
+                  <option value="49">🇩🇪 +49</option>
+                  <option value="39">🇮🇹 +39</option>
+                  <option value="52">🇲🇽 +52</option>
+                  <option value="54">🇦🇷 +54</option>
+                  <option value="56">🇨🇱 +56</option>
+                  <option value="57">🇨🇴 +57</option>
+                  <option value="51">🇵🇪 +51</option>
+                </select>
+                <input type="tel" id="recoverPhone" style="flex:1" placeholder="" />
+              </div>
+            </label>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+            <button id="recoverSubmit" class="btn btn-primary">Enviar</button>
+            <button id="recoverCancel" class="btn btn-outline">Cancelar</button>
+            <div id="recoverStatus" style="margin-left:auto;font-weight:600;color:var(--blue-700)"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">© G&amp;P Finance — Gestão Financeira Inteligente</div>
+        <div class="footer-center"></div>
+        <div class="footer-right"></div>
+      </div>
+    </footer>
+
+    <script>
+      // Password visibility toggle
+      const togglePassword = document.getElementById('togglePassword');
+      const loginSenha = document.getElementById('loginSenha');
+      if (togglePassword && loginSenha) {
+        togglePassword.addEventListener('click', ()=>{
+          const shown = loginSenha.type === 'text';
+          loginSenha.type = shown ? 'password' : 'text';
+          togglePassword.setAttribute('aria-label', shown ? 'Mostrar senha' : 'Ocultar senha');
+          // swap icon: simple approach — change innerHTML
+          if (shown) {
+            togglePassword.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="#153263" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#153263" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          } else {
+            togglePassword.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3l18 18" stroke="#153263" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.58 10.58A3 3 0 0113.42 13.42" stroke="#153263" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          }
+        });
+      }
+
+      // Login submit — post to backend /auth/login and store token
+      const loginForm = document.getElementById('loginForm');
+      const loginStatus = document.getElementById('loginStatus');
+      loginForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        loginStatus.textContent = 'Entrando...';
+        loginStatus.style.color = 'var(--blue-700)';
+        const email = document.getElementById('loginEmail').value;
+        const senha = document.getElementById('loginSenha').value;
+        try{
+          const baseUrl = window.FUNCTIONS_BASE_URL || window.BACKEND_URL || '';
+          const endpoint = baseUrl ? baseUrl + (window.FUNCTIONS_BASE_URL ? '/login' : '/auth/login') : '/auth/login';
+          const res = await fetch(endpoint, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ email, senha }) });
+          const body = await res.json().catch(()=>({}));
+          if (!res.ok) {
+            loginStatus.textContent = body.error || 'Credenciais inválidas';
+            loginStatus.style.color = 'crimson';
+            return;
+          }
+          const token = body.token || body.jwt || null;
+          if (token) {
+            try{ localStorage.setItem('jwt', token); }catch(err){}
+          }
+          window.location.href = '/system.html';
+        } catch (err) {
+          console.error(err);
+          loginStatus.textContent = 'Erro ao conectar';
+          loginStatus.style.color = 'crimson';
+        }
+      });
+
+      // Recover controls
+      const recuperarSenhaLink = document.getElementById('recuperarSenhaLink');
+      const recuperarUsuarioLink = document.getElementById('recuperarUsuarioLink');
+      const recoverContainer = document.getElementById('recoverContainer');
+      const recoverTitle = document.getElementById('recoverTitle');
+      const recoverSubtitle = document.getElementById('recoverSubtitle');
+      const recoverStatus = document.getElementById('recoverStatus');
+      const recoverSubmit = document.getElementById('recoverSubmit');
+      const recoverCancel = document.getElementById('recoverCancel');
+
+      let currentRecoverAction = 'password'; // or 'username'
+
+      function openRecover(action){
+        currentRecoverAction = action;
+        recoverTitle.textContent = action === 'password' ? 'Recuperar senha' : 'Recuperar usuário';
+        recoverSubtitle.textContent = action === 'password' ? 'Podemos enviar instruções por e‑mail ou SMS/telefone' : 'Recuperar seu usuário por telefone';
+        recoverStatus.textContent = '';
+        // If recovering username, force phone-only: hide radio selector and email row
+        const byRow = document.getElementById('recoverByRow');
+          if (action === 'username') {
+          if (byRow) byRow.style.display = 'none';
+          document.getElementById('recoverEmailRow').style.display = 'none';
+          document.getElementById('recoverPhoneRow').style.display = 'block';
+          // ensure phone input is empty when opening username recovery
+          try { const rp = document.getElementById('recoverPhone'); if (rp) rp.value = ''; } catch(e){}
+          // ensure the phone radio is checked if present
+          const phoneRadio = document.querySelector('input[name="recoverBy"][value="phone"]');
+          if (phoneRadio) phoneRadio.checked = true;
+        } else {
+          if (byRow) byRow.style.display = 'flex';
+          // default to email for password recovery
+          const emailRadio = document.querySelector('input[name="recoverBy"][value="email"]');
+          if (emailRadio) emailRadio.checked = true;
+          document.getElementById('recoverEmailRow').style.display = 'block';
+          document.getElementById('recoverPhoneRow').style.display = 'none';
+          // clear phone input when switching back to email mode
+          try { const rp2 = document.getElementById('recoverPhone'); if (rp2) rp2.value = ''; } catch(e){}
+        }
+        recoverContainer.style.display = 'block';
+      }
+
+      recuperarSenhaLink.addEventListener('click',(e)=>{ e.preventDefault(); openRecover('password'); });
+      recuperarUsuarioLink.addEventListener('click',(e)=>{ e.preventDefault(); openRecover('username'); });
+      recoverCancel.addEventListener('click',(e)=>{ e.preventDefault(); recoverContainer.style.display='none'; });
+
+      // toggle email/phone rows (only active when radio selector visible)
+      document.querySelectorAll('input[name="recoverBy"]').forEach(r=>r.addEventListener('change', ()=>{
+        const byRow = document.getElementById('recoverByRow');
+        if (byRow && byRow.style.display === 'none') return; // ignore when hidden (username flow)
+        const by = document.querySelector('input[name="recoverBy"]:checked').value;
+        document.getElementById('recoverEmailRow').style.display = by === 'email' ? 'block' : 'none';
+        document.getElementById('recoverPhoneRow').style.display = by === 'phone' ? 'block' : 'none';
+      }));
+
+      // Phone formatting helpers (same rules as registration)
+      function formatPhoneByDDI(ddi, raw) {
+        const d = String(raw || '').replace(/\D/g, '');
+        if (!ddi) return raw;
+        if (ddi === '55') {
+          if (d.length === 0) return '';
+          if (d.length <= 2) return `(${d}`;
+          const area = d.slice(0,2);
+          const rest = d.slice(2);
+          if (rest.length <= 4) return `(${area}) ${rest}`;
+          if (rest.length <= 9) return `(${area}) ${rest.slice(0,rest.length-4)}-${rest.slice(-4)}`;
+          return `(${area}) ${rest.slice(0,rest.length-4)}-${rest.slice(-4)}`;
+        }
+        if (ddi === '1') {
+          if (d.length <= 3) return `(${d}`;
+          if (d.length <= 6) return `(${d.slice(0,3)}) ${d.slice(3)}`;
+          return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6,10)}`;
+        }
+        if (ddi === '351' || ddi === '34' || ddi === '54') {
+          if (d.length <= 3) return d;
+          if (d.length <= 6) return `${d.slice(0,3)} ${d.slice(3)}`;
+          return `${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6,10)}`;
+        }
+        return raw;
+      }
+
+      function getMaxDigitsForDDI(ddi){
+        const map = {
+          '55': 11, '1':10, '351':9, '34':9, '33':9, '44':10, '49':11, '39':10,
+          '52':10, '54':10, '56':9, '57':10, '51':9
+        };
+        return map[String(ddi)] || 11;
+      }
+
+      // Wire recover phone formatting
+      const recoverDdiSelect = document.getElementById('recoverDdiSelect');
+      const recoverPhone = document.getElementById('recoverPhone');
+      if (recoverDdiSelect && recoverPhone) {
+        recoverDdiSelect.addEventListener('change', ()=>{
+          const formatted = formatPhoneByDDI(recoverDdiSelect.value, recoverPhone.value || '');
+          recoverPhone.value = formatted || '';
+        });
+        recoverPhone.addEventListener('input', (e)=>{
+          const ddi = recoverDdiSelect.value || '55';
+          const max = getMaxDigitsForDDI(ddi);
+          let digits = (e.target.value || '').replace(/\D/g, '');
+          digits = digits.slice(0, max);
+          const formatted = formatPhoneByDDI(ddi, digits);
+          e.target.value = formatted;
+        });
+      }
+
+      recoverSubmit.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        recoverStatus.textContent = '';
+        const by = document.querySelector('input[name="recoverBy"]:checked').value;
+        const payload = {};
+        if (by === 'email') payload.email = document.getElementById('recoverEmail').value;
+        else payload.phone = document.getElementById('recoverPhone').value;
+        const endpoint = currentRecoverAction === 'password' ? '/auth/recover-password' : '/auth/recover-username';
+        try{
+          const base = window.FUNCTIONS_BASE_URL || window.BACKEND_URL || '';
+          const res = await fetch(base + endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+          const body = await res.json().catch(()=>({}));
+          if (!res.ok) {
+            recoverStatus.textContent = body.error || 'Falha ao solicitar recuperação';
+            recoverStatus.style.color = 'crimson';
+            return;
+          }
+          recoverStatus.textContent = 'Solicitação enviada — verifique seu e‑mail ou SMS.';
+          recoverStatus.style.color = 'green';
+        }catch(err){
+          console.error(err);
+          recoverStatus.textContent = 'Erro ao conectar';
+          recoverStatus.style.color = 'crimson';
+        }
+      });
+    </script>
+  </body>
+</html>

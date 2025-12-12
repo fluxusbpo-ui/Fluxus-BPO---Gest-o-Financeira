@@ -1,0 +1,10 @@
+﻿Backup created: Backup02 - 05.12.2025
+Date: 2025-12-05 11:42:39
+
+Files created:
+- frontend zip: frontend - Backup02 - 05.12.2025.zip
+- backend zip: backend - Backup02 - 05.12.2025.zip
+
+Notes:
+- The file 'backend\\data\\db.sqlite3' was EXCLUDED from the backend zip to avoid locking errors.
+- If you need the live DB file included, stop any process using it and re-run the backup.

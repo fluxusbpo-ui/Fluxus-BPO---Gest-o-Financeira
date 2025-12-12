@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contato — G&P Finance</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body class="contact-page">
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/index.html" aria-label="Voltar para a página inicial">
+          <!-- inline SVG logo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#1e59d6"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#1e59d6"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#1e59d6"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#1e59d6"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2b55">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#0f2b55">Finance</text>
+            </g>
+          </svg>
+        </a>
+        <nav class="main-nav">
+          <a href="/index.html#home">Início</a>
+          <a href="/index.html#solutions">Soluções</a>
+          <a href="/index.html#plans">Planos</a>
+          <a href="/demo.html">Sistema G&amp;P</a>
+          <a href="/contact.html">Contato</a>
+        </nav>
+        <div class="actions">
+          <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+          <a class="btn btn-primary" href="/login.html">Entrar</a>
+        </div>
+        <button class="header-toggle" aria-expanded="false" aria-label="Abrir menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <div class="mobile-panel" aria-hidden="true">
+          <nav class="main-nav mobile">
+            <a href="/index.html#home">Início</a>
+            <a href="/index.html#solutions">Soluções</a>
+            <a href="/index.html#plans">Planos</a>
+            <a href="/demo.html">Sistema G&amp;P</a>
+            <a href="/contact.html">Contato</a>
+          </nav>
+          <div class="actions mobile">
+            <a class="btn btn-outline" href="./register.html?plan=FREE">Começar (Gratuito)</a>
+            <a class="btn btn-primary" href="/login.html">Entrar</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="contact-main">
+      <div class="contact-band contact-band--top">
+        <div class="container" style="max-width:760px; margin:0 auto">
+          <h1>Contato</h1>
+          <p>Fale com a gente — conte suas dúvidas sobre o sistema, interesse em pacotes, elogios ou sugestões; responderemos em breve.</p>
+        </div>
+      </div>
+
+      <div class="container" style="max-width:1100px; margin:18px auto 0">
+        <div class="contact-grid">
+          
+
+          <div class="contact-card contact-card--form">
+            <form id="contactForm" class="contact-form">
+          <input type="hidden" name="plan" id="selectedPlanInput" />
+          <div id="planBadge" style="margin-bottom:12px;font-weight:700;color:var(--blue-700)"></div>
+          <label>
+            Nome Completo
+            <input type="text" name="name" required />
+          </label>
+
+          <label>
+            Empresa
+            <input type="text" name="company" required />
+          </label>
+
+          <label>
+            CNPJ (opcional)
+            <input type="text" name="cnpj" />
+          </label>
+
+          <label>
+            Email
+            <input type="email" name="email" required />
+          </label>
+
+          <label>
+            Telefone (WhatsApp)
+            <input type="tel" name="phone" required />
+          </label>
+
+          <label>
+            Tipo de contato
+            <select name="reason">
+              <option value="Sugestão">Sugestão</option>
+              <option value="Reclamação">Reclamação</option>
+              <option value="Duvida">Dúvida</option>
+              <option value="Suporte">Suporte</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </label>
+
+          <label>
+            Motivo / Descrição
+            <textarea name="message" rows="5" placeholder="Descreva brevemente o motivo do contato (opcional)"></textarea>
+          </label>
+
+              <div style="display:flex;gap:10px;align-items:center">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <div id="status" style="color:var(--blue-700);font-weight:600"></div>
+              </div>
+            </form>
+          </div>
+
+          <aside class="contact-aside" aria-labelledby="contact-aside-heading">
+            <div class="hours-card">
+              <h3 id="contact-aside-heading">Nossos horários de atendimento</h3>
+              <p class="hours">Segunda a Sexta — 09:00 às 18:00</p>
+              <p class="hours-note">Atendemos dúvidas sobre o sistema, pacotes, implantação e contratos.</p>
+            </div>
+
+            <div class="whatsapp-card">
+              <h4>Fale também pelo WhatsApp</h4>
+              <a class="wa-btn" href="https://wa.me/55xxxyyyyyyyy" target="_blank" rel="noopener noreferrer">📱 (xx) xxxxx-xxxx</a>
+              <p class="wa-note">Envie uma mensagem direta e nossa equipe responderá no horário de atendimento.</p>
+            </div>
+
+            <div class="email-card">
+              <h4>Ou envie um e-mail</h4>
+              <div class="email-list" style="margin:6px 0 0; line-height:1.6">
+                <div><a href="mailto:suporte@gpfinance.com.br">suporte@gpfinance.com.br</a></div>
+                <div><a href="mailto:comercial@gpfinance.com.br">comercial@gpfinance.com.br</a></div>
+              </div>
+            </div>
+
+            <!-- removed: footer SVG moved to page footer for site-wide consistency -->
+          </aside>
+        </div>
+      </div>
+
+      <div class="contact-band contact-band--bottom" aria-hidden="true">
+        <div class="container" style="max-width:760px; margin:0 auto; height:28px"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div class="footer-left">© G&amp;P Finance — Gestão Financeira Inteligente</div>
+
+        <div class="footer-center" aria-label="Links institucionais">
+          <a href="/juridico.html" class="footer-link">Jurídico</a>
+          <a href="/termos-de-servico.html" class="footer-link">Termos de serviço</a>
+          <a href="/politica-de-privacidade.html" class="footer-link">Nossa política de privacidade</a>
+          <a href="/opcoes-de-privacidade.html" class="footer-link">Suas opções de privacidade</a>
+          <span class="footer-copy">Todos os direitos reservados © G&amp;P Finance</span>
+        </div>
+
+        <div class="footer-right" aria-label="Redes sociais">
+          <a href="#" class="social-icon" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="3" fill="#153263"/>
+              <path d="M6.94 8.5H4.5V18h2.44V8.5zM5.72 6.9c.78 0 1.26-.52 1.26-1.17 0-.65-.48-1.17-1.26-1.17-.77 0-1.26.52-1.26 1.17 0 .65.49 1.17 1.26 1.17zM19 18h-2.44v-4c0-1.01-.02-2.31-1.41-2.31-1.42 0-1.64 1.11-1.64 2.26V18H11.5V8.5h2.34v1.26h.03c.33-.62 1.14-1.27 2.35-1.27 2.51 0 2.97 1.65 2.97 3.79V18z" fill="#fff"/>
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" fill="#153263"/><circle cx="12" cy="12" r="3.2" fill="#fff"/><circle cx="17.2" cy="6.8" r="0.8" fill="#fff"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Facebook" title="Facebook">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="2" fill="#153263"/><path d="M13.5 8H15V5.8C14.6 5.7 13.3 5.5 12 5.5C9.8 5.5 8.5 6.8 8.5 9V11H6.5V14H8.5V19H11.5V14H13.5L14 11H11.5V9C11.5 8.6 11.6 8.5 12.2 8.5H13.5V8Z" fill="#fff"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="X" title="X">
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="2" fill="#153263"/><path d="M7 8L17 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M17 8L7 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // read ?plan= from URL and set hidden input + badge
+      (function(){
+        const params = new URLSearchParams(window.location.search);
+        const plan = params.get('plan');
+        if (plan) {
+          const input = document.getElementById('selectedPlanInput');
+          input.value = plan;
+          const badge = document.getElementById('planBadge');
+          badge.textContent = 'Plano selecionado: ' + plan.toUpperCase();
+        }
+      })();
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('status');
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        status.textContent = 'Enviando...';
+        const data = Object.fromEntries(new FormData(form).entries());
+        try{
+          const res = await fetch((window.BACKEND_URL || '') + '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(()=>({error:'Erro'}));
+            status.textContent = err.error || 'Erro ao enviar';
+            status.style.color = 'crimson';
+            return;
+          }
+          status.textContent = 'Enviado — obrigado!';
+          status.style.color = 'green';
+          form.reset();
+        }catch(err){
+          console.error(err);
+          status.textContent = 'Falha ao enviar';
+          status.style.color = 'crimson';
+        }
+      });
+    </script>
+  </body>
+</html>

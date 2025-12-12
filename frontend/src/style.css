@@ -1,0 +1,495 @@
+:root{
+  --bg:#f6f9fb;
+  --header-height:56px;
+  --blue-900:#0f2b55;
+  --blue-700:#173a6b;
+  --accent:#1e59d6;
+  --muted:#6b7280;
+}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+.site-header{background:#fff;border-bottom:1px solid #e6eef6}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;padding-top:var(--header-height);background:var(--bg);color:#0b1220}
+.site-header{background:#fff;border-bottom:1px solid #e6eef6}
+.container{max-width:1320px;margin:0 auto;padding:24px}
+.site-header{position:fixed;top:0;left:0;width:100%;z-index:9999; background:rgba(255,255,255,0.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid rgba(230,238,246,0.6);height:var(--header-height);} 
+.site-header .container{max-width:1180px;padding:0 24px}
+.header-inner{display:flex;align-items:center;gap:16px;height:var(--header-height);justify-content:space-between}
+.header-edge-controls{position:absolute;right:12px;top:0;height:var(--header-height);display:flex;align-items:center;gap:12px;z-index:10001}
+.header-edge-controls .plan-badge{color:#ffffff !important;font-weight:700;padding:8px 12px;border-radius:10px;background:transparent;font-size:13px;border:none;letter-spacing:0.2px;display:inline-block;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.95);text-decoration-thickness:3px;text-underline-offset:6px;text-shadow:0 1px 0 rgba(0,0,0,0.15)}
+.header-edge-controls .plan-badge::before{content:'';display:inline-block;width:8px;height:8px;background:transparent;margin-right:8px;border-radius:2px}
+.header-edge-controls .upgrade-btn{background:#fff;color:var(--blue-900);padding:8px 12px;border-radius:8px;border:1px solid #e6eef6}
+.header-edge-controls .gear-btn{background:transparent;border:0;color:#e6f1ff;padding:6px;display:flex;align-items:center}
+/* Make gear button more prominent: larger hit area, subtle white background, border and shadow */
+.header-edge-controls .gear-btn{
+  width:40px;
+  height:40px;
+  padding:6px;
+  border-radius:8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.18);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.header-edge-controls .gear-btn:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.09); box-shadow: 0 10px 26px rgba(2,6,23,0.22); }
+.header-edge-controls .gear-btn svg, .header-edge-controls .gear-btn .gear-img { width:20px; height:20px; }
+.header-edge-controls .gear-btn .gear-img { display:block; width:20px; height:20px; object-fit:contain; }
+/* Forçar o ícone da engrenagem embutido a ser branco (prevalece sobre regras anteriores) */
+.header-edge-controls .gear-btn svg.inline-gear, .header-edge-controls .gear-btn svg.inline-gear path { fill: #ffffff !important; stroke: none !important; }
+.header-edge-controls .gear-btn svg.inline-gear { width:20px; height:20px; display:block }
+.header-edge-controls .gear-btn svg path, .header-edge-controls .gear-btn svg circle, .header-edge-controls .gear-btn svg line { stroke: #e6f1ff !important; fill: none !important; }
+.header-edge-controls .gear-btn svg { fill: none; }
+.brand{font-weight:700;color:var(--accent)}
+.main-nav{display:flex;gap:26px;position:absolute;left:50%;transform:translateX(-50%)}
+.main-nav a{text-decoration:none;color:#37517a}
+.actions{display:flex;gap:22px;align-items:center;position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:9999}
+.header-toggle{display:none}
+.mobile-panel{display:none}
+.logo{position:absolute;left:20px;top:50%;transform:translateY(-50%);z-index:10000;display:block}
+.logo svg{height:32px;display:block}
+.site-header { color: #0f2b55; }
+.btn{padding:8px 14px;border-radius:8px;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-ghost{background:transparent;border:1px solid #dbe9ff}
+.btn-outline{background:#fff;border:1px solid #e6eef6}
+/* Make outline-style buttons have black text and no underline by default */
+.btn-outline, .btn-outline:link, .btn-outline:visited {
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
+/* Header action button adjustments: remove underline and slightly smaller box like contact page */
+.actions a, .actions a.btn {
+  text-decoration: none;
+  display: inline-block;
+}
+.actions .btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 120px;
+  font-size: 14px;
+  color: #000; /* texto preto consistente */
+  text-decoration: none;
+}
+
+/* Centered main nav styling for the new header layout */
+.main-nav a{
+  color: var(--blue-700);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius:6px;
+  font-weight:600;
+}
+.main-nav a:hover{
+  background: rgba(30,89,214,0.06);
+}
+
+/* Slightly smaller Entrar button on header right */
+.actions .btn-primary{
+  padding:6px 14px;
+  border-radius:8px;
+  color: #fff !important; /* garantir texto branco */
+  display: inline-flex; /* centralizar texto verticalmente */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Ensure header typography is identical across pages */
+.site-header, .site-header * {
+  font-family: Inter, system-ui, Arial, sans-serif !important;
+  color: inherit !important;
+}
+.site-header .main-nav a {
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+}
+.site-header .actions .btn,
+.site-header .actions a.btn {
+  font-weight: 700 !important; /* Entrar deve aparecer em negrito */
+  font-size: 14px !important;
+}
+/* Force SVG text inside logo to use the same family and weight */
+.logo svg text {
+  font-family: Inter, system-ui, Arial, sans-serif !important;
+  font-weight: 700 !important;
+}
+.actions .btn-outline {
+  background: #fff;
+  border: 1px solid #e6eef6;
+  color: #000; /* garantir preto também para anchors */
+}
+.actions .btn-outline:link,.actions .btn-outline:visited{color:#000}
+
+/* HERO */
+.hero{background:linear-gradient(180deg,var(--blue-900),#153263);color:#fff;padding:28px 0 32px}
+.hero{position:relative;overflow:hidden}
+.hero .container{max-width:700px}
+.hero-inner{display:grid;grid-template-columns:1fr;gap:0;align-items:start}
+.hero-left{grid-column:1 / 2;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:700px;margin:0 auto}
+.hero-right{display:block;position:absolute;inset:0;pointer-events:none;z-index:0}
+
+/* hero watermark graphics */
+.hero-graphics{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-graphic{position:absolute;opacity:0.06;filter:blur(0.6px)}
+.hero-graphics{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:0;overflow:visible}
+.hero-graphic-left{position:absolute;left:0;top:12%;width:60vw;max-width:none;height:auto;transform:translateX(-6%);opacity:.06}
+.hero-graphic-right{position:absolute;right:0;top:36%;width:60vw;max-width:none;height:auto;transform:translateX(6%);opacity:.06}
+.hero .container{position:relative;z-index:1}
+.hero h1{font-size:30px;margin:0 0 8px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead{opacity:0.95;max-width:640px;font-size:14px;line-height:1.35;margin-bottom:8px}
+/* recursos (cards do hero) - coluna única, cards compactos como no anexo 2 */
+.features-list{margin-top:16px;display:grid;grid-template-columns:1fr;gap:8px;width:100%;max-width:680px;margin-left:auto;margin-right:auto}
+.feature{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px;box-shadow:0 4px 12px rgba(4,22,44,0.08)}
+.feature .icon{width:32px;height:32px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px}
+.feature > div{display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feature strong{font-size:14px;flex:0 0 auto}
+.feature p{margin:0;color:rgba(235,245,255,0.9);font-size:13px;flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.hero-card{display:none}
+
+.hero-subtext{width:100%;display:block;margin-top:22px;text-align:center}
+.muted-lead{color:rgba(234,243,255,0.95);font-weight:600;font-size:18px;margin:0 0 8px}
+.muted-small{color:rgba(234,243,255,0.86);font-size:13px;margin:0}
+
+/* solutions grid */
+.solutions{padding:48px 24px}
+.cards-grid{display:grid;grid-template-columns:repeat(4,minmax(300px,1fr));gap:24px}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(13,32,63,0.06);transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease;will-change:transform;display:flex;flex-direction:column}
+.card:hover,.card:focus-within{transform:translateY(-8px);box-shadow:0 14px 40px rgba(13,32,63,0.12);cursor:pointer}
+.card:focus-within{outline:2px solid rgba(30,89,214,0.10);outline-offset:6px}
+.card h4{margin-top:0;color:#153263;line-height:1.15;font-size:15px;text-align:center}
+.card .card-intro{margin:6px 0 10px;color:var(--muted);font-size:12px;line-height:1.35;text-align:center}
+.card ul{padding-left:0;color:#475569;line-height:1.35;list-style:none}
+.card ul li{margin-bottom:8px;display:grid;grid-template-columns:20px 1fr;grid-auto-rows:auto;gap:4px 12px;align-items:start}
+.card ul li::before{content:'✔';color:var(--accent);font-size:12px;line-height:1;margin-top:4px;grid-column:1;grid-row:1/3}
+.card ul li strong{grid-column:2;grid-row:1;margin:0;font-size:13px;color:#153263;font-weight:700}
+.card ul li p{grid-column:2;grid-row:2;margin:0;color:#6b7280;font-size:12px;line-height:1.35}
+.card .link{display:inline-block;margin-top:12px;color:var(--accent);text-decoration:none;margin-top:auto;align-self:flex-start}
+
+/* ideal */
+.ideal{padding:40px 24px}
+.ideal h3{margin:0 0 16px}
+.ideal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ideal-card{background:#fff;border-radius:10px;padding:12px;transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease;display:flex;flex-direction:column;gap:8px;min-height:84px}
+.ideal-card.dark{background:#0f2b55;color:#e6f1ff;box-shadow:0 6px 18px rgba(13,32,63,0.06)}
+.ideal-card:hover,.ideal-card:focus-within{transform:translateY(-6px);box-shadow:0 12px 30px rgba(13,32,63,0.10);cursor:pointer}
+.ideal-card h5{margin:0 0 6px;font-size:13px}
+.ideal-card p{margin:0;font-size:13px;line-height:1.35;color:inherit}
+
+/* plans */
+.plans{padding:40px 24px}
+.plans h3{margin-bottom:20px}
+.plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.plan{background:#fff;border-radius:12px;padding:22px;text-align:center;border:1px solid #e7eef8}
+.plan.featured{/* destaque removido por padrão; destaque aparece ao passar o mouse */box-shadow:0 6px 18px rgba(13,32,63,0.06)}
+.plan h4{margin:0}
+.price{font-weight:700;margin:12px 0;color:#153263}
+.plan ul{list-style:none;padding:0;margin:0 0 12px;color:#475569}
+
+/* Plan features: spacing and check/cross styles */
+.plan-features{padding:0;margin:0 0 12px;list-style:none;color:#475569}
+.plan-features li{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px;line-height:1.6;text-align:left}
+.plan-features li span{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center}
+.plan-features li .check{width:auto;height:auto;border:none;border-radius:0;color:var(--accent);font-weight:700;font-size:16px;background:transparent;padding:0;margin-top:2px;display:inline-block}
+.plan-features li .cross{width:auto;height:auto;border:none;border-radius:0;color:rgba(107,114,128,0.45);font-weight:700;font-size:16px;background:transparent;padding:0;margin-top:2px;display:inline-block}
+
+/* Slightly more breathing room inside each plan */
+.plan{padding:24px;display:flex;flex-direction:column;min-height:420px;transition:box-shadow .18s ease,border .18s ease,transform .18s ease}
+.plan:hover, .plan:focus-within{border:2px solid var(--accent);box-shadow:0 8px 30px rgba(30,89,214,0.08);transform:translateY(-6px)}
+.plan h4{margin-bottom:6px}
+.price{margin-bottom:14px}
+
+/* Plan footer: keep button at bottom */
+.plan-footer{margin-top:auto;display:flex;justify-content:center}
+.plan-footer .btn{min-width:96px;padding:6px 12px;border-radius:8px;text-decoration:none;display:inline-block;font-size:14px}
+.plan-footer a.btn, .plan-footer a.btn:link, .plan-footer a.btn:visited{ text-decoration:none }
+
+/* Company selection cards on system page */
+.company-selection .company-cards{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:stretch;max-width:1180px;margin:0 auto}
+.company-card{background:#fff;border-radius:12px;padding:22px;box-shadow:0 8px 26px rgba(4,22,44,0.08);display:flex;flex-direction:column;gap:12px}
+.company-card{min-height:220px}
+.company-card.primary{background:#fff;border-left:6px solid var(--accent);padding:28px}
+.company-card.add{display:flex;justify-content:space-between;align-items:flex-start}
+.company-card.primary .company-title{font-size:16px;color:var(--blue-700);margin:0 0 6px}
+.company-card.primary .company-name{font-size:20px;font-weight:800;color:#153263}
+.company-card .card-graphic{display:flex;align-items:center;gap:12px}
+.company-card .card-graphic svg{width:48px;height:48px}
+.company-card.add .card-graphic svg{width:48px;height:48px}
+
+/* commerce icon style: slightly thinner stroke and scaled for balance */
+.card-graphic svg.commerce { width:40px; height:40px }
+.card-graphic svg.commerce path, .card-graphic svg.commerce rect, .card-graphic svg.commerce line { stroke: var(--blue-700); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round }
+
+/* ensure graphic sits inside card padding and doesn't overflow */
+.company-card.add .card-graphic{padding:8px 0 6px 8px}
+/* new layout for add-tiles */
+.company-card.add .add-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:12px}
+.company-card.add .action-tile{display:block;padding:0}
+
+/* action button as square tile: svg above label */
+.company-card.add .action-tile .action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;aspect-ratio:1/1;padding:16px;border-radius:12px;border:1px solid #e6eef6;background:#fff;text-decoration:none;color:var(--blue-700);box-shadow:0 4px 12px rgba(4,22,44,0.04);transition:transform .12s ease,box-shadow .12s ease}
+.company-card.add .action-tile .action-btn .action-label{font-weight:700;text-align:center}
+.company-card.add .action-tile .action-btn:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(4,22,44,0.08);border-color:var(--accent)}
+.company-card.add .action-tile .action-btn:active{transform:translateY(-2px)}
+.company-card.add .action-tile .action-btn svg{width:48px;height:48px}
+.company-card.add .action-tile .action-btn svg path, .company-card.add .action-tile .action-btn svg rect, .company-card.add .action-tile .action-btn svg line, .company-card.add .action-tile .action-btn svg circle{stroke:var(--blue-700);stroke-width:1.8;fill:none}
+.company-card.add .action-tile .action-btn:focus{outline:3px solid rgba(30,89,214,0.12);outline-offset:3px}
+
+@media (max-width:880px){
+  .company-card.add .add-tiles{grid-template-columns:1fr;gap:12px}
+  .company-card.add .action-tile .action-btn{aspect-ratio:auto;width:100%;min-height:96px}
+}
+
+/* user icon style for thick blue lines */
+.btn.icon-btn svg.user { width:20px;height:20px; margin-right:8px; vertical-align:middle }
+.btn.icon-btn svg.user path, .btn.icon-btn svg.user circle { stroke: var(--blue-700); stroke-width:2.6; fill: none; stroke-linecap:round; stroke-linejoin:round }
+
+/* make action buttons sit nicely next to each other */
+.company-card .company-actions .btn { margin-right:8px }
+.company-card.add .company-actions { display:flex; gap:8px; align-items:center }
+.company-card.add{display:flex;justify-content:space-between;align-items:flex-start}
+.company-card.add h3{margin:0;font-size:16px}
+.company-card .company-actions{margin-top:auto}
+.company-card.add .muted{color:var(--muted);margin:6px 0 10px}
+.company-card .btn{min-width:140px}
+.company-card.locked{opacity:0.82;filter:grayscale(0.02)}
+.company-card.locked .btn{background:#fff;color:#000;border:1px solid #e6eef6}
+
+@media (max-width: 880px){
+  .company-selection .company-cards{grid-template-columns:1fr;}
+}
+
+/* Garantir que botões primários dos planos tenham texto branco e negrito */
+.plan-footer .btn-primary{ background:var(--accent); color:#fff; font-weight:700; border:1px solid transparent }
+.plan-footer .btn-primary:hover{ filter:brightness(0.96) }
+
+.site-footer{ /* footer styles removed - footer will be refactored */ }
+
+/* compensate for fixed header when scrolling to anchors */
+section{scroll-margin-top:calc(var(--header-height) + 8px)}
+
+/* Responsive */
+@media (max-width: 980px){
+  .cards-grid{grid-template-columns:1fr}
+  .ideal-grid{grid-template-columns:1fr}
+  .plans-grid{grid-template-columns:1fr}
+  .hero-inner{grid-template-columns:1fr}
+  .hero-left{align-items:center;text-align:center}
+  .hero-subtext{text-align:center;padding:0 12px}
+  .hero-right{display:none}
+  .hero-graphic{display:none}
+  /* on small screens, keep brand left and actions at the far right; show nav below */
+  .main-nav{position:static;transform:none;justify-content:center;margin:12px 0;display:flex}
+  .header-inner{flex-direction:column;align-items:stretch;padding:10px 0}
+  .actions{justify-content:flex-end;position:static;transform:none;top:auto;right:auto;gap:12px}
+  .actions .btn{padding:6px 10px;min-width:96px;font-size:14px}
+}
+
+@media (max-width: 600px){
+  .cards-grid{grid-template-columns:1fr}
+  .plans-grid{grid-template-columns:1fr}
+  .main-nav{justify-content:center;gap:10px;padding-top:8px}
+  .brand{font-size:16px}
+  .logo{position:static;transform:none;margin-bottom:6px}
+  .logo svg{height:28px}
+  .btn{padding:6px 8px;font-size:14px}
+  .actions{gap:8px}
+  .actions .btn{min-width:72px}
+}
+
+/* Very small screens: hide secondary 'Começar (Gratuito)' button to save space */
+@media (max-width: 480px){
+  .actions .btn-outline{display:none}
+  .actions .btn-primary{padding:6px 10px;font-size:13px;min-width:80px}
+}
+
+/* Mobile collapsed header: show a menu toggle icon that expands nav + actions stacked */
+@media (max-width: 420px){
+  .header-inner{position:relative}
+  .main-nav{display:none;flex-direction:column;background:transparent;padding:8px 12px;border-radius:8px;gap:6px}
+  .actions{display:none;flex-direction:column;gap:8px;margin-top:8px}
+  .header-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:32px;border-radius:8px;background:rgba(0,0,0,0.06);cursor:pointer;position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:10001}
+  .header-toggle .bar{width:18px;height:2px;background:var(--blue-700);display:block;margin:2px 0}
+
+  /* Mobile panel aligned to the right, full-height list (Omie-like) */
+  .header-inner .mobile-panel{display:none;position:fixed;top:var(--header-height);right:12px;left:auto;width:320px;max-width:calc(100% - 24px);height:calc(100% - var(--header-height) - 12px);overflow:auto;background:rgba(255,255,255,0.98);box-shadow:0 12px 36px rgba(13,32,63,0.18);border-radius:8px 0 0 8px;padding:12px;z-index:100000}
+  .header-inner.open .mobile-panel{display:block}
+
+  /* small transition for nicer UX */
+  .header-inner .mobile-panel{transform:translateX(6px);transition:transform .18s ease,opacity .16s ease}
+  .header-inner.open .mobile-panel{transform:translateX(0)}
+
+  .mobile-panel .main-nav.mobile{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .mobile-panel .main-nav.mobile a{display:block;padding:10px 12px;width:100%;text-align:left;border-radius:6px;color:var(--blue-700)}
+  .mobile-panel .actions.mobile{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .mobile-panel .actions.mobile .btn{width:100%;padding:8px 10px;min-width:0;box-sizing:border-box}
+}
+
+/* Force header consistency across pages (aggressive overrides) */
+.site-header, header.site-header {
+  height: 56px !important;
+  min-height: 56px !important;
+}
+.site-header .container {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.header-inner {
+  height: 56px !important;
+  min-height: 56px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  align-items: center !important;
+}
+.logo, .actions {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+.main-nav {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+.logo svg {
+  height: 32px !important;
+}
+.actions .btn {
+  padding: 8px 12px !important;
+  line-height: 1 !important;
+  min-width: 120px !important;
+}
+
+/* Ensure body offset stays consistent with header height */
+body {
+  padding-top: 56px !important;
+}
+
+/* When pages remove the header, zero the top offset */
+body.no-header {
+  padding-top: 0 !important;
+}
+
+/* Contact page: ensure header equals main page (56px) */
+body.contact-page .site-header,
+body.contact-page header.site-header {
+  height: 56px !important;
+  min-height: 56px !important;
+}
+body.contact-page .header-inner {
+  height: 56px !important;
+  min-height: 56px !important;
+}
+body.contact-page {
+  padding-top: 56px !important;
+}
+body.contact-page .logo svg {
+  height: 32px !important;
+}
+body.contact-page .actions .btn {
+  padding: 8px 12px !important;
+  min-width: 120px !important;
+}
+
+/* Make FREE plan button text black (first plan card) */
+.plans-grid .plan:nth-child(1) .plan-footer .btn {
+  color: #000 !important;
+  background: #fff !important;
+  border: 1px solid #e6eef6 !important;
+}
+
+.plans-grid .plan:nth-child(1) .plan-footer .btn:link,
+.plans-grid .plan:nth-child(1) .plan-footer .btn:visited {
+  color: #000 !important;
+}
+/* Contact page styles: blue bands above and below, white card form */
+.contact-main{padding:20px 24px 40px}
+
+/* CONTACT PAGE: header should match the main page (1180 x 56) and use same font */
+/* CONTACT PAGE: header translucent like main page and sized to match */
+body.contact-page .site-header { background: rgba(255,255,255,0.88) !important; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); height: var(--header-height) !important; border-bottom: none !important; box-shadow: none !important; }
+body.contact-page .site-header .container { max-width: 1180px; padding: 0 24px; }
+body.contact-page .site-header, body.contact-page .site-header * { font-family: Inter, system-ui, Arial, sans-serif !important; }
+/* Logo positioned flush to left edge similar to main header */
+body.contact-page .logo { left: 20px !important; top: 50% !important; transform: translateY(-50%) !important; }
+body.contact-page .site-header .logo svg { height: 32px !important; width: auto !important; }
+
+/* Make the blue band sit under the translucent header (overlap) so there's no visible white gap */
+.contact-band{margin-top:-6px;padding-top:28px}
+
+/* Solid blue band (no gradient) above and below the form. Uses the darker blue from the main hero. */
+.contact-band{background:var(--blue-900);padding:36px 0}
+.contact-band--top h1, .contact-band--top p{color:#fff;margin:0}
+.contact-band--top p{color:rgba(255,255,255,0.9);margin-top:8px}
+.contact-band--bottom{background:var(--blue-900);height:36px}
+
+.contact-card{background:#fff;border:1px solid rgba(14,46,99,0.08);padding:22px;border-radius:12px;box-shadow:0 8px 20px rgba(8,30,66,0.06)}
+.contact-card h1{color:#111;margin:0 0 6px}
+.contact-form{display:grid;gap:12px}
+.contact-form label{display:block;font-size:13px;color:#0f2b55}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form select,
+.contact-form textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e6eef6;background:#fff;color:#0f2b55;box-shadow:none;outline:none;font-size:14px}
+.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus{box-shadow:0 6px 18px rgba(30,89,214,0.06);border-color:var(--accent)}
+.contact-form textarea{min-height:140px;resize:vertical;border:1.5px solid rgba(0,0,0,0.06);padding:12px}
+.contact-form textarea:focus{border-color:var(--accent);box-shadow:0 10px 30px rgba(30,89,214,0.08)}
+.contact-card .btn{box-shadow:0 6px 18px rgba(30,89,214,0.06)}
+
+/* Ensure the white card visually stands out on small screens */
+@media (max-width: 980px){
+  .contact-band{padding:28px 0}
+  .contact-card{margin:0 12px}
+  .contact-main{padding-top:20px}
+}
+
+/* Contact grid: form + aside */
+.contact-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+.contact-card--form{min-height:420px}
+.contact-aside{display:flex;flex-direction:column;gap:16px}
+.contact-aside .hours-card,
+.contact-aside .whatsapp-card{background:#fff;border:1px solid rgba(14,46,99,0.06);padding:16px;border-radius:10px;box-shadow:0 8px 22px rgba(8,30,66,0.06)}
+.contact-aside h3{margin:0 0 8px;color:var(--accent);font-size:16px}
+.contact-aside .hours{margin:0;color:#153263;font-weight:700}
+.contact-aside .hours-note{margin:8px 0 0;color:#475569;font-size:13px}
+.whatsapp-card h4{margin:0 0 8px;color:#153263}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:700}
+.wa-note{margin:8px 0 0;color:#475569;font-size:13px}
+
+@media (max-width: 980px){
+  .contact-grid{grid-template-columns:1fr}
+  .contact-aside{order:2}
+  .contact-card--form{order:1}
+}
+
+/* removed contact-logo column (logo is shown in header on this page) */
+
+/* footer styles removed - footer will be refactored */
+
+/* Footer (index) - three columns: left, center, right */
+.site-footer{background:var(--bg);border-top:1px solid #e6eef6;padding:14px 0}
+.site-footer .footer-row{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 24px}
+.site-footer .footer-left{flex:0 0 auto;color:#153263;font-weight:600}
+.site-footer .footer-center{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;flex:1}
+.site-footer .footer-center .footer-link{color:var(--blue-700);text-decoration:none;font-size:14px}
+.site-footer .footer-center .footer-link:hover{text-decoration:underline}
+.site-footer .footer-center .footer-copy{color:#6b7280;font-size:13px;margin-left:8px}
+.site-footer .footer-right{flex:0 0 auto;display:flex;gap:12px;align-items:center}
+.site-footer .social-icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:transparent;text-decoration:none}
+.site-footer .social-icon svg{display:block}
+
+@media (max-width: 980px){
+  .site-footer .footer-row{flex-direction:column;align-items:flex-start;padding:12px}
+  .site-footer .footer-center{order:2;justify-content:flex-start}
+  .site-footer .footer-right{order:3}
+}
+
+@media (max-width: 480px){
+  .site-footer .footer-left{font-size:14px}
+  .site-footer .footer-center .footer-link{font-size:13px}
+}

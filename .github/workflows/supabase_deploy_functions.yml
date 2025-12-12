@@ -1,0 +1,46 @@
+name: Deploy Supabase Functions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install supabase CLI (npm)
+        run: |
+          npm install -g supabase
+
+      - name: Deploy functions
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          supabase login --access-token $SUPABASE_ACCESS_TOKEN
+          supabase link --project-ref ${SUPABASE_URL##*/}
+          supabase functions deploy --no-verify
+      - name: Run smoke tests
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          # Compute project ref and functions base URL
+          PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's@https?://@@' | cut -d '.' -f1)
+          FUNCTIONS_BASE_URL="https://$PROJECT_REF.functions.supabase.co"
+          echo "Functions base: $FUNCTIONS_BASE_URL"
+          npm ci
+          export FUNCTIONS_BASE_URL="$FUNCTIONS_BASE_URL"
+          node scripts/smoke_test_functions.js

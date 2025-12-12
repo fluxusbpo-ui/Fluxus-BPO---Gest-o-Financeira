@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema G&P — Em construção</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      .placeholder { display:flex;align-items:center;justify-content:center;height:calc(100vh - var(--header-height));flex-direction:column;padding:24px;text-align:center }
+      .placeholder h1{font-size:22px;margin:0 0 12px}
+      .placeholder p{color:var(--muted);max-width:680px}
+      .cards {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px;width:100%;max-width:920px}
+      .card {background:#fff;border-radius:10px;padding:14px;box-shadow:0 6px 18px rgba(13,32,63,0.06)}
+      .placeholder a.btn {margin-top:16px}
+      body.no-header { padding-top: 0 !important; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background:var(--blue-900);border-bottom:none;color:#e6f1ff">
+      <div class="container header-inner" style="display:flex;justify-content:space-between;padding:8px 12px;align-items:center;">
+        <a class="logo" href="/demo.html" aria-label="Voltar para a página inicial" style="display:inline-flex;align-items:center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#fff"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#fff"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#fff"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#fff"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#fff">Finance</text>
+            </g>
+          </svg>
+        </a>
+
+        <div class="header-edge-controls">
+          <div id="planBadge" class="plan-badge">Plano Free</div>
+          <a id="upgradeBtn" class="btn btn-outline upgrade-btn" href="/index.html#plans">Upgrade</a>
+          <button id="accountSettings" aria-label="Configurações da conta" title="Configurações" class="gear-btn">
+            <!-- Usar a imagem exata enviada pelo usuário. Salve-a em `frontend/assets/gear.png`. -->
+            <!-- SVG branco embutido refinado: 8 dentes regulares e anel externo -->
+            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="inline-gear">
+              <g transform="translate(12,12)">
+                <!-- dentes (8 réctangles, igualmente espaçados) -->
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(45)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(90)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(135)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(180)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(225)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(270)" fill="#ffffff" />
+                <rect x="-0.9" y="-10.6" width="1.8" height="3.6" rx="0.45" transform="rotate(315)" fill="#ffffff" />
+
+                <!-- anel externo (apenas traço para deixar o centro recortado) -->
+                <circle cx="0" cy="0" r="7.2" fill="none" stroke="#ffffff" stroke-width="2.6" />
+
+                <!-- círculo interno (recorte visual) - deixamos transparente para mostrar o fundo) -->
+                <circle cx="0" cy="0" r="3.2" fill="rgba(0,0,0,0)" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main style="padding-top:28px">
+      <section class="company-selection container" aria-label="Selecione a empresa" style="margin-top:18px">
+        <div class="company-cards">
+          <article class="company-card primary" id="primaryCompanyCard">
+            <h2 class="company-title">Selecione a empresa</h2>
+            <div>
+              <select id="companySelect" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef6;background:#fff;font-size:16px">
+                <option value="">Carregando empresas...</option>
+              </select>
+            </div>
+            <div class="company-name" id="primaryCompanyDetails" style="margin-top:12px">&nbsp;</div>
+            <div class="company-actions">
+              <!-- Botão "Selecionar" removido: seleção agora é automática ao escolher na lista -->
+              <span id="companySelectedLabel" style="display:inline-block;font-weight:700;color:var(--blue-700)"></span>
+            </div>
+          </article>
+
+          <article class="company-card add" id="addCompanyCard">
+            <!-- Novo layout: duas tiles compactas dentro da caixa para manter alturas padronizadas -->
+            <div class="add-tiles">
+              <div class="action-tile" id="tileAddCompany">
+                <a id="addCompanyBtn" class="action-btn" href="/company-create.html" role="button" aria-label="Adicionar Empresa">
+                  <svg class="commerce" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <rect x="3" y="8" width="18" height="9" rx="1.2" />
+                    <path d="M4 8l1-2h14l1 2" />
+                    <path d="M7 8v-1a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v1" />
+                    <line x1="8" y1="13" x2="8" y2="17" />
+                  </svg>
+                  <span class="action-label">Adicionar Empresa</span>
+                </a>
+              </div>
+
+              <div class="action-tile" id="tileAddUsers">
+                <a id="addUsersBtn" class="action-btn" href="/users.html" role="button" aria-label="Adicionar Usuários">
+                  <svg class="user" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="8" r="3" />
+                    <path d="M5 20c1.5-3 4.5-4 7-4s5.5 1 7 4" />
+                  </svg>
+                  <span class="action-label">Adicionar Usuários</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="placeholder" aria-hidden="true" style="padding-top:28px">
+        <h1>Sistema G&P — Em construção</h1>
+        <p>Estamos preparando a página com detalhes, imagens e funcionalidades do sistema. Esta é uma página placeholder até a implementação completa.</p>
+
+        <div class="cards" aria-hidden="true">
+          <div class="card">Imagem / Demo 1 (em breve)</div>
+          <div class="card">Imagem / Demo 2 (em breve)</div>
+          <div class="card">Imagem / Demo 3 (em breve)</div>
+        </div>
+
+        <a class="btn btn-outline" href="/index.html">Voltar à página inicial</a>
+      </section>
+    </main>
+
+    <footer class="site-footer" style="background:var(--blue-900);color:#e6f1ff;border-top:none;padding:12px 0;height:48px">
+      <div class="container footer-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
+        <!-- intentionally minimal footer: no textual links as requested -->
+      </div>
+    </footer>
+
+    <script>
+      (function(){
+        // Require a JWT in localStorage to access this page
+        try{
+          const jwt = localStorage.getItem('jwt');
+          if (!jwt) {
+            // not authenticated -> redirect to login
+            window.location.href = '/login.html';
+            return;
+          }
+        }catch(e){ window.location.href = '/login.html'; return; }
+
+        // Update plan badge from storage if available
+        try{
+          const plan = (localStorage.getItem('plan') || 'FREE').toUpperCase();
+          const planBadge = document.getElementById('planBadge');
+          if (planBadge) {
+            planBadge.textContent = 'Plano ' + plan;
+          }
+        }catch(e){}
+
+        // Render company selection area (try API first, fallback to localStorage)
+          try{
+          const jwtToken = localStorage.getItem('jwt') || localStorage.getItem('token') || null;
+          const headers = { 'Content-Type': 'application/json' };
+          if (jwtToken) headers['Authorization'] = 'Bearer ' + jwtToken;
+
+          let companies = [];
+          try {
+            // call backend directly (frontend runs on :3001, backend on :5000)
+            const base = window.FUNCTIONS_BASE_URL || window.BACKEND_URL || '';
+            const companiesEndpoint = base ? base + (window.FUNCTIONS_BASE_URL ? '/companies' : '/api/companies') : '/api/companies';
+            const res = await fetch(companiesEndpoint, { headers });
+            if (res.ok) {
+              companies = await res.json();
+            }
+          } catch(err) {
+            console.warn('API fetch companies failed, falling back to localStorage', err);
+          }
+
+          // fallback to localStorage if API returned nothing
+          if (!companies || companies.length === 0) {
+            const companiesRaw = localStorage.getItem('companies');
+            if (companiesRaw) {
+              try { companies = JSON.parse(companiesRaw) } catch(e){ companies = [] }
+            }
+            if ((!companies || companies.length === 0) && localStorage.getItem('companyName')) {
+              companies = [{ name: localStorage.getItem('companyName'), cnpj: localStorage.getItem('companyCnpj') || null, telefone: localStorage.getItem('companyTelefone') || null, email: localStorage.getItem('companyEmail') || null }];
+            }
+            if ((!companies || companies.length === 0) && localStorage.getItem('empresa_nome')) {
+              companies = [{ name: localStorage.getItem('empresa_nome') }];
+            }
+          }
+
+          const planUpper = (localStorage.getItem('plan') || 'FREE').toUpperCase();
+          const limits = { 'FREE': 1, 'ESSENCIAL': 1, 'PRO': 5, 'ENTERPRISE': 20 };
+          const maxCompanies = limits[planUpper] || 1;
+          const companyCount = (companies && companies.length) || 0;
+
+          const primaryNameEl = document.getElementById('primaryCompanyName');
+          const selectBtn = document.getElementById('selectCompanyBtn');
+          const addBtn = document.getElementById('addCompanyBtn');
+          const addCard = document.getElementById('addCompanyCard');
+
+          const selectEl = document.getElementById('companySelect');
+          const detailsEl = document.getElementById('primaryCompanyDetails');
+          if (selectEl) selectEl.innerHTML = '';
+          if (companies && companies.length > 0) {
+            companies.forEach((c, idx)=>{
+              const opt = document.createElement('option');
+              opt.value = c.id || c.name || idx;
+              opt.textContent = (c.razao_social || c.name || c.razao || ('Empresa ' + (idx+1)));
+              selectEl.appendChild(opt);
+            });
+            // show details for selected (first)
+            const first = companies[0];
+            function showCompany(c){
+              const cnpj = c.cnpj || c.cpf || 'CNPJ não informado';
+              const tel = c.telefone || c.phone || 'Telefone não informado';
+              const email = c.email || 'E-mail não informado';
+              detailsEl.innerHTML = '<div style="font-weight:800;font-size:18px;color:#153263">' + (c.razao_social || c.name || c.razao || 'Minha Empresa') + '</div>' +
+                '<div style="margin-top:6px;color:var(--muted);font-size:13px">' + cnpj + ' • ' + tel + '</div>' +
+                '<div style="margin-top:4px;color:var(--muted);font-size:13px">' + email + '</div>';
+            }
+            showCompany(first);
+            selectEl.addEventListener('change', function(){
+              const val = selectEl.value;
+              const found = companies.find(x => (x.id == val) || (x.name == val));
+              if (found) {
+                showCompany(found);
+                // salvar seleção automaticamente
+                localStorage.setItem('company_selected', found.id || found.name || found.razao_social || 'empresa-1');
+                // mostrar label de selecionado
+                const label = document.getElementById('companySelectedLabel');
+                if (label) {
+                  label.textContent = 'Selecionado';
+                }
+              }
+            });
+          } else {
+            if (selectEl) selectEl.innerHTML = '<option value="">Nenhuma empresa cadastrada</option>';
+            detailsEl.textContent = 'Nenhuma empresa cadastrada';
+            selectBtn.textContent = 'Ver empresas';
+            selectBtn.href = '/companies.html';
+          }
+
+          // Add company button behavior depends on plan limits
+          if ((planUpper === 'FREE' || planUpper === 'ESSENCIAL') && companyCount >= maxCompanies) {
+            // limit reached -> ask user to upgrade
+            addBtn.href = '/index.html#plans';
+            addBtn.textContent = 'Fazer upgrade';
+            addCard.classList.add('locked');
+          } else {
+            addBtn.href = '/company-create.html';
+            addBtn.textContent = 'Adicionar empresa';
+            addCard.classList.remove('locked');
+          }
+        }catch(e){ console.warn('company render error', e) }
+
+        // Wire account settings (gear) to open settings page
+        document.getElementById('accountSettings').addEventListener('click', function(){
+          window.location.href = '/account-settings.html';
+        });
+      })();
+    </script>
+  </body>
+</html>

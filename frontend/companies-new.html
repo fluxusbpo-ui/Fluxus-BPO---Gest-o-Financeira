@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Nova Empresa — G&P</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      .container { max-width:1100px; margin:8px auto; padding:0 12px }
+      .page-title { font-size:26px; color:var(--blue-700); margin:0 0 8px; font-weight:800; letter-spacing:0.2px }
+      form{background:#fff;padding:22px;border-radius:12px;box-shadow:0 8px 24px rgba(13,32,63,0.06)}
+      label{display:block;margin-bottom:8px;font-weight:600}
+      input,textarea,select{width:100%;padding:12px;border:1px solid #e6eef6;border-radius:10px;font-size:15px;min-height:42px}
+      textarea{min-height:120px}
+      .form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+      .form-grid label{display:block;margin-bottom:6px}
+      .col-2{grid-column:span 2}
+      /* spacing helpers */
+      .form-grid .col-12{padding-bottom:6px}
+      .col-6{grid-column:span 6}
+      .col-4{grid-column:span 4}
+      .col-3{grid-column:span 3}
+      .col-8{grid-column:span 8}
+      .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+      .muted{color:var(--muted)}
+      .alert{padding:10px;border-radius:8px;background:#fff4f6;border:1px solid #ffdce0;color:#711;}
+      /* layout / sidebar (lightweight copy from companies.css) */
+      .layout { display:grid; grid-template-columns:240px 1fr; gap:22px; align-items:start; width:100%; }
+      .layout.collapsed { grid-template-columns:72px 1fr; }
+      /* fine millimetric nudge: lowered a few pixels to better match the red guide */
+      aside.sidebar { background:#fff;border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(4,22,44,0.06);position:sticky;top:140px;max-height:calc(100vh - 140px - 56px - 24px);overflow:auto;align-self:start }
+      .btn { padding:8px 12px; border-radius:8px; border:1px solid transparent; cursor:pointer; display:inline-flex; align-items:center }
+      .btn-ghost { background:transparent; border:1px solid #e6eef6 }
+      .btn-primary { background:#153263; color:#fff }
+      .btn-danger { background:#ffeded; color:#c23 }
+      .sidebar .btn { width:100%; justify-content:flex-start; gap:10px }
+      .sidebar .sidebar-label { font-weight:600; color:var(--blue-700); white-space:nowrap }
+      /* Remover bordas das caixas no sidebar (botões) */
+      .sidebar .btn,
+      .sidebar .btn-ghost,
+      .sidebar .btn-danger,
+      .sidebar .btn.new-company,
+      .sidebar .btn.btn-ghost {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding-left: 0.6rem !important;
+      }
+      /* Layout adjusted: CEP small at left, Logradouro to its right.
+        Número sits below CEP (left), Complemento to its right.
+        Bairro below Número (left), Município to its right, UF to the far right. */
+      .address-grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:10px; align-items:start }
+      /* make CEP slightly wider to avoid truncation and freeze its control width */
+      .address-grid .cep{grid-column:span 3}
+      /* ensure CEP inputs maintain a minimum width and the lookup button keeps fixed size */
+      .address-grid .cep input{min-width:140px; flex:1 1 auto}
+      .address-grid .cep button{flex:0 0 44px}
+      .address-grid .logradouro{grid-column:span 9}
+      .address-grid .numero{grid-column:span 2}
+      .address-grid .complemento{grid-column:span 10}
+      .address-grid .bairro{grid-column:span 6}
+      .address-grid .municipio{grid-column:span 4}
+      .address-grid .uf{grid-column:span 2}
+      .address-grid label{display:block;margin-bottom:6px}
+      .address-grid input{min-height:40px}
+      /* minimal modal styles (used by billing panel) */
+      .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:1200 }
+      .modal.hidden { display:none }
+      .modal-overlay { position:absolute; inset:0; background:rgba(6,12,28,0.45) }
+      .modal-panel { position:relative; width:90%; max-width:920px; max-height:86vh; overflow:auto; background:#fff; border-radius:10px; padding:16px }
+      /* Tabs (Excel-like) */
+      /* Tabs: increase default size so they are easier to interact with and match visual weight */
+      .tabs { display:flex; gap:12px; align-items:flex-start; margin-bottom:14px }
+      .tab { padding:10px 18px; border:1px solid #e6eef6; border-bottom:1px solid transparent; background:#f4f8ff; border-top-left-radius:8px; border-top-right-radius:8px; cursor:pointer; font-weight:700; font-size:15px; line-height:1; min-height:40px; display:inline-flex; align-items:center; justify-content:center }
+      .tab.active { background:#fff; border-color:#e6eef6; border-bottom-color:#fff; box-shadow: 0 10px 24px rgba(13,32,63,0.06); }
+      .hidden { display:none !important }
+      /* Ensure billing-like panels span the form width and behave consistently */
+      /* Ensure billing-like panels always render full-width inside the form
+        NOTE: do not force display here — keep .hidden (display:none) able to hide panels */
+      .billing-tab { width:100%; box-sizing:border-box; max-width:none; margin:12px 0 }
+      /* ensure the billing-like panel is treated as a direct row inside the grid */
+      .form-grid > .billing-tab { grid-column: 1 / -1 !important; }
+      /* Checkbox tweaks: avoid global input padding affecting checkboxes
+        make checkboxes small, aligned and with consistent margin */
+      input[type="checkbox"]{ width:16px; height:16px; padding:0; min-height:initial; margin-right:8px; vertical-align:middle; border-radius:3px }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background:var(--blue-900);border-bottom:none;color:#e6f1ff">
+      <div class="container header-inner" style="display:flex;justify-content:space-between;padding:8px 12px;align-items:center;">
+        <a class="logo" href="/demo.html" aria-label="Voltar para a página inicial" style="display:inline-flex;align-items:center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#fff"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#fff"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#fff"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#fff"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#fff">Finance</text>
+            </g>
+          </svg>
+        </a>
+        <div style="display:flex;align-items:center;gap:18px">
+        </div>
+        <div style="width:120px"></div>
+      </div>
+    </header>
+    <main style="padding-top:12px;">
+      <div class="container">
+      </div>
+
+      <div class="layout" style="margin-top:0">
+        <!-- Sidebar restored to match companies layout/styling -->
+        <aside class="sidebar" style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(4,22,44,0.06);position:sticky;top:140px;max-height:calc(100vh - 140px - 56px - 24px);overflow:auto;align-self:start;margin-left:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:8px"></div>
+            </div>
+          </div>
+          <hr style="margin:12px 0;border:0;border-top:1px solid #eef4fc" />
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+            <a id="sidebarSave" href="#" class="btn new-company" style="display:flex;align-items:center;gap:8px">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Salvar</span>
+            </a>
+            <button id="sidebarFaturamento" class="btn btn-ghost">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Inativar</span>
+            </button>
+            <button id="sidebarEntregas" class="btn btn-danger">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Excluir</span>
+            </button>
+          </div>
+          <div style="flex:1 1 auto"></div>
+          <div style="margin-top:8px">
+            <a id="sidebarBack" href="/companies.html" class="btn btn-ghost" style="padding-left:8px">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Voltar</span>
+            </a>
+          </div>
+        </aside>
+
+          <section>
+            <div style="margin:8px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+            <!-- Billing / Deliveries / Documents tab (embaixo do formulário) -->
+            <!-- será exibida como uma aba da ficha, não como modal -->
+
+            <h1 class="page-title">Cadastrar Nova Empresa</h1>
+          </div>
+          <div id="root"></div>
+            </div>
+          </section>
+        </div>
+        
+      </div>
+    </main>
+    <footer class="site-footer"></footer>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Nova Empresa — G&P</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      .container { max-width:1100px; margin:8px auto; padding:0 12px }
+      .page-title { font-size:26px; color:var(--blue-700); margin:0 0 8px; font-weight:800; letter-spacing:0.2px }
+      form{background:#fff;padding:22px;border-radius:12px;box-shadow:0 8px 24px rgba(13,32,63,0.06)}
+      label{display:block;margin-bottom:8px;font-weight:600}
+      input,textarea,select{width:100%;padding:12px;border:1px solid #e6eef6;border-radius:10px;font-size:15px;min-height:42px}
+      textarea{min-height:120px}
+      .form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+      .form-grid label{display:block;margin-bottom:6px}
+      .col-2{grid-column:span 2}
+      /* spacing helpers */
+      .form-grid .col-12{padding-bottom:6px}
+      .col-6{grid-column:span 6}
+      .col-4{grid-column:span 4}
+      .col-3{grid-column:span 3}
+      .col-8{grid-column:span 8}
+      .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+      .muted{color:var(--muted)}
+      .alert{padding:10px;border-radius:8px;background:#fff4f6;border:1px solid #ffdce0;color:#711;}
+      /* layout / sidebar (lightweight copy from companies.css) */
+      .layout { display:grid; grid-template-columns:240px 1fr; gap:22px; align-items:start; width:100%; }
+      .layout.collapsed { grid-template-columns:72px 1fr; }
+      /* fine millimetric nudge: lowered a few pixels to better match the red guide */
+      aside.sidebar { background:#fff;border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(4,22,44,0.06);position:sticky;top:140px;max-height:calc(100vh - 140px - 56px - 24px);overflow:auto;align-self:start }
+      .btn { padding:8px 12px; border-radius:8px; border:1px solid transparent; cursor:pointer; display:inline-flex; align-items:center }
+      .btn-ghost { background:transparent; border:1px solid #e6eef6 }
+      .btn-primary { background:#153263; color:#fff }
+      .btn-danger { background:#ffeded; color:#c23 }
+      .sidebar .btn { width:100%; justify-content:flex-start; gap:10px }
+      .sidebar .sidebar-label { font-weight:600; color:var(--blue-700); white-space:nowrap }
+      /* Remover bordas das caixas no sidebar (botões) */
+      .sidebar .btn,
+      .sidebar .btn-ghost,
+      .sidebar .btn-danger,
+      .sidebar .btn.new-company,
+      .sidebar .btn.btn-ghost {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding-left: 0.6rem !important;
+      }
+      /* Layout adjusted: CEP small at left, Logradouro to its right.
+        Número sits below CEP (left), Complemento to its right.
+        Bairro below Número (left), Município to its right, UF to the far right. */
+      .address-grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:10px; align-items:start }
+      /* make CEP slightly wider to avoid truncation and freeze its control width */
+      .address-grid .cep{grid-column:span 3}
+      /* ensure CEP inputs maintain a minimum width and the lookup button keeps fixed size */
+      .address-grid .cep input{min-width:140px; flex:1 1 auto}
+      .address-grid .cep button{flex:0 0 44px}
+      .address-grid .logradouro{grid-column:span 9}
+      .address-grid .numero{grid-column:span 2}
+      .address-grid .complemento{grid-column:span 10}
+      .address-grid .bairro{grid-column:span 6}
+      .address-grid .municipio{grid-column:span 4}
+      .address-grid .uf{grid-column:span 2}
+      .address-grid label{display:block;margin-bottom:6px}
+      .address-grid input{min-height:40px}
+      /* minimal modal styles (used by billing panel) */
+      .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:1200 }
+      .modal.hidden { display:none }
+      .modal-overlay { position:absolute; inset:0; background:rgba(6,12,28,0.45) }
+      .modal-panel { position:relative; width:90%; max-width:920px; max-height:86vh; overflow:auto; background:#fff; border-radius:10px; padding:16px }
+      /* Tabs (Excel-like) */
+      /* Tabs: increase default size so they are easier to interact with and match visual weight */
+      .tabs { display:flex; gap:12px; align-items:flex-start; margin-bottom:14px }
+      .tab { padding:10px 18px; border:1px solid #e6eef6; border-bottom:1px solid transparent; background:#f4f8ff; border-top-left-radius:8px; border-top-right-radius:8px; cursor:pointer; font-weight:700; font-size:15px; line-height:1; min-height:40px; display:inline-flex; align-items:center; justify-content:center }
+      .tab.active { background:#fff; border-color:#e6eef6; border-bottom-color:#fff; box-shadow: 0 10px 24px rgba(13,32,63,0.06); }
+      .hidden { display:none !important }
+      /* Ensure billing-like panels span the form width and behave consistently */
+      /* Ensure billing-like panels always render full-width inside the form
+        NOTE: do not force display here — keep .hidden (display:none) able to hide panels */
+      .billing-tab { width:100%; box-sizing:border-box; max-width:none; margin:12px 0 }
+      /* ensure the billing-like panel is treated as a direct row inside the grid */
+      .form-grid > .billing-tab { grid-column: 1 / -1 !important; }
+      /* Checkbox tweaks: avoid global input padding affecting checkboxes
+        make checkboxes small, aligned and with consistent margin */
+      input[type="checkbox"]{ width:16px; height:16px; padding:0; min-height:initial; margin-right:8px; vertical-align:middle; border-radius:3px }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background:var(--blue-900);border-bottom:none;color:#e6f1ff">
+      <div class="container header-inner" style="display:flex;justify-content:space-between;padding:8px 12px;align-items:center;">
+        <a class="logo" href="/demo.html" aria-label="Voltar para a página inicial" style="display:inline-flex;align-items:center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#fff"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#fff"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#fff"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#fff"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#fff">Finance</text>
+            </g>
+          </svg>
+        </a>
+        <div style="display:flex;align-items:center;gap:18px">
+        </div>
+        <div style="width:120px"></div>
+      </div>
+    </header>
+    <main style="padding-top:12px;">
+      <div class="container">
+      </div>
+
+      <div class="layout" style="margin-top:0">
+        <!-- Sidebar restored to match companies layout/styling -->
+        <aside class="sidebar" style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(4,22,44,0.06);position:sticky;top:140px;max-height:calc(100vh - 140px - 56px - 24px);overflow:auto;align-self:start;margin-left:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:8px"></div>
+            </div>
+          </div>
+          <hr style="margin:12px 0;border:0;border-top:1px solid #eef4fc" />
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+            <a id="sidebarSave" href="#" class="btn new-company" style="display:flex;align-items:center;gap:8px">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Salvar</span>
+            </a>
+            <button id="sidebarFaturamento" class="btn btn-ghost">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Inativar</span>
+            </button>
+            <button id="sidebarEntregas" class="btn btn-danger">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Excluir</span>
+            </button>
+          </div>
+          <div style="flex:1 1 auto"></div>
+          <div style="margin-top:8px">
+            <a id="sidebarBack" href="/companies.html" class="btn btn-ghost" style="padding-left:8px">
+              <span class="sidebar-icon" aria-hidden="true" style="width:18px;height:18px;display:inline-block"></span>
+              <span class="sidebar-label">Voltar</span>
+            </a>
+          </div>
+        </aside>
+
+          <section>
+            <div style="margin:8px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+            <!-- Billing / Deliveries / Documents tab (embaixo do formulário) -->
+            <!-- será exibida como uma aba da ficha, não como modal -->
+
+            <h1 class="page-title">Cadastrar Nova Empresa</h1>
+          </div>
+          <div id="root"></div>
+            </div>
+          </section>
+        </div>
+        
+      </div>
+    </main>
+    <footer class="site-footer"></footer>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

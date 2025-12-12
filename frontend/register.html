@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro — G&P Finance</title>
+    <link rel="stylesheet" href="/src/style.css">
+      <style>
+        /* Page-specific overrides: make header/footer solid blue matching main page */
+        body.register-page .site-header { background: var(--blue-900) !important; border-bottom: none !important; }
+        body.register-page .site-header .main-nav a { color: #e6f1ff !important; }
+        body.register-page .site-header .actions .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255,255,255,0.12) !important }
+        body.register-page .site-header .actions .btn-primary { background: var(--accent) !important; }
+        body.register-page .site-footer { background: var(--blue-900) !important; color: #e6f1ff; border-top: none; position:fixed; left:0; right:0; bottom:0; height:56px; display:flex; align-items:center }
+        body.register-page .site-footer .footer-left, body.register-page .site-footer .footer-center .footer-link { color: #e6f1ff !important }
+        body.register-page { padding-top: 56px !important; overflow: hidden; }
+
+        /* Layout: make the main hero fill available viewport between header and footer and center the card */
+        .contact-hero { display:flex; align-items:center; justify-content:center; min-height: calc(100vh - 56px - 56px); }
+        /* lift the card a little so it's visually above center */
+        .contact-card{ max-height: calc(100vh - 56px - 56px - 80px); overflow:auto; transform: translateY(-6vh); margin: 0 auto }
+        /* hide scrollbar on page level to avoid body scrolling */
+        html, body { height: 100%; }
+
+        /* CNPJ input removed from form — styles omitted */
+        /* Ensure password inputs match other inputs styling */
+        .contact-form input[type="password"]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e6eef6;background:#fff;color:#0f2b55;box-shadow:none;outline:none;font-size:14px}
+        .contact-form input[type="password"]:focus{box-shadow:0 6px 18px rgba(30,89,214,0.06);border-color:var(--accent)}
+
+        /* Password strength bar */
+        .pwd-strength{height:8px;background:#e6eef6;border-radius:6px;overflow:hidden;margin-top:6px}
+        .pwd-strength > .bar{height:100%;width:0%;background:crimson;transition:width .18s ease,background .18s ease}
+        .pwd-strength-text{margin-top:6px;font-size:13px;color:var(--muted)}
+        /* DDI select smaller with emoji flags */
+        .ddi-select{min-width:72px;max-width:86px;padding:6px;border-radius:8px;border:1px solid #e6edf7;background:#fff;font-size:14px}
+        .ddi-select:focus{outline:none;box-shadow:0 6px 18px rgba(30,89,214,0.06);border-color:var(--accent)}
+      </style>
+  </head>
+  <body class="register-page">
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/index.html" aria-label="Voltar para a página inicial">
+          <!-- inline SVG logo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="G&P Finance logo">
+            <title>G&amp;P Finance</title>
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(0 4)">
+                <rect x="0" y="20" width="8" height="12" rx="1" fill="#1e59d6"/>
+                <rect x="14" y="12" width="8" height="20" rx="1" fill="#1e59d6"/>
+                <rect x="28" y="6" width="8" height="26" rx="1" fill="#1e59d6"/>
+                <rect x="42" y="0" width="8" height="32" rx="1" fill="#1e59d6"/>
+              </g>
+              <text x="68" y="24" font-family="Inter, system-ui, Arial, sans-serif" font-size="18" font-weight="700" fill="#e6f1ff">G&amp;P</text>
+              <text x="68" y="36" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#e6f1ff">Finance</text>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <main class="contact-main" style="padding-top:20px">
+      <div class="contact-hero">
+        <div class="container" style="max-width:760px; margin:0 auto">
+          <h1>Cadastro</h1>
+          <p>Complete os dados para criar sua conta. Após o cadastro enviaremos um e-mail de confirmação.</p>
+
+          <div class="contact-card">
+            <form id="registerForm" class="contact-form">
+              <input type="hidden" name="plan" id="selectedPlanInput" />
+              <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+                <div id="planBadge" style="font-weight:700;color:var(--blue-700)">Plano selecionado:</div>
+                <label style="margin:0;font-weight:600">Plano:&nbsp;
+                  <select id="planSelect" name="plan_select" style="padding:6px;border-radius:6px;border:1px solid #dfe6f2">
+                    <option value="FREE">FREE</option>
+                    <option value="ESSENCIAL">ESSENCIAL</option>
+                    <option value="PRO">PRO</option>
+                    <option value="ENTERPRISE">ENTERPRISE</option>
+                  </select>
+                </label>
+              </div>
+
+              <!-- CNPJ and Razão Social removed per UX request: only responsible name, phone, email and passwords are required -->
+
+              <label>
+                Nome do Responsável
+                <input type="text" name="nome_responsavel" required />
+              </label>
+
+              <label>
+                Telefone contato
+                <div style="display:flex;gap:8px;align-items:center">
+                  <select id="ddiSelect" name="ddi" class="ddi-select" aria-label="Selecione DDI">
+                    <option value="55" selected>🇧🇷 +55</option>
+                    <option value="1">🇺🇸 +1</option>
+                    <option value="44">🇬🇧 +44</option>
+                    <option value="351">🇵🇹 +351</option>
+                    <option value="34">🇪🇸 +34</option>
+                    <option value="33">🇫🇷 +33</option>
+                    <option value="49">🇩🇪 +49</option>
+                    <option value="39">🇮🇹 +39</option>
+                    <option value="52">🇲🇽 +52</option>
+                    <option value="54">🇦🇷 +54</option>
+                    <option value="56">🇨🇱 +56</option>
+                    <option value="57">🇨🇴 +57</option>
+                    <option value="51">🇵🇪 +51</option>
+                    <option value="598">🇺🇾 +598</option>
+                    <option value="58">🇻🇪 +58</option>
+                    <option value="61">🇦🇺 +61</option>
+                    <option value="1">🇨🇦 +1</option>
+                    <option value="86">🇨🇳 +86</option>
+                    <option value="81">🇯🇵 +81</option>
+                    <option value="91">🇮🇳 +91</option>
+                    <option value="27">🇿🇦 +27</option>
+                    <option value="31">🇳🇱 +31</option>
+                    <option value="32">🇧🇪 +32</option>
+                    <option value="41">🇨🇭 +41</option>
+                    <option value="46">🇸🇪 +46</option>
+                  </select>
+                  <input type="tel" name="telefone" id="telefoneInput" placeholder="(48) 00000-0000" style="flex:1" />
+                </div>
+              </label>
+
+              <label>
+                E-mail (login)
+                <input type="email" name="email" required />
+              </label>
+
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <label style="flex:1;min-width:0">
+                  Nova Senha
+                  <input type="password" name="senha" id="senha" required />
+                </label>
+                <label style="flex:1;min-width:0">
+                  Confirmar Nova Senha
+                  <input type="password" name="confirmar_senha" id="confirmar_senha" required />
+                </label>
+              </div>
+              <div id="passwordStrengthContainer" style="margin-top:6px">
+                <div class="pwd-strength" aria-hidden="true"><div id="passwordStrengthBar" class="bar"></div></div>
+                <div id="passwordStrengthText" class="pwd-strength-text">Use ao menos 6 caracteres, 1 letra maiúscula, 1 número e 1 caracter especial.</div>
+              </div>
+
+              <div style="display:flex;gap:10px;align-items:center">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <a class="btn btn-outline" href="/index.html">Voltar</a>
+                <div id="status" style="color:var(--blue-700);font-weight:600"></div>
+              </div>
+              <div id="planPrice" style="margin-top:10px;font-weight:700;color:var(--blue-700)"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">© G&amp;P Finance — Gestão Financeira Inteligente</div>
+        <div class="footer-center"></div>
+        <div class="footer-right"></div>
+      </div>
+    </footer>
+
+    <script>
+      // read ?plan= from URL and set hidden input + badge
+      (function(){
+        const params = new URLSearchParams(window.location.search);
+        const plan = params.get('plan');
+        const planSelect = document.getElementById('planSelect');
+        if (plan) {
+          const input = document.getElementById('selectedPlanInput');
+          input.value = plan;
+          const badge = document.getElementById('planBadge');
+          badge.textContent = 'Plano selecionado:';
+          if (planSelect) planSelect.value = plan.toUpperCase();
+        }
+        // price mapping and keep select and hidden input in sync
+        const planPrices = {
+          FREE: 'R$0',
+          ESSENCIAL: 'R$99 / mês',
+          PRO: 'R$199 / mês',
+          ENTERPRISE: 'R$499 / mês'
+        };
+        function updatePrice(p) {
+          const el = document.getElementById('planPrice');
+          if (!el) return;
+          el.textContent = 'Valor do plano: ' + (planPrices[p] || '—');
+        }
+        if (planSelect) {
+          planSelect.addEventListener('change', (e)=>{
+            const value = e.target.value;
+            document.getElementById('selectedPlanInput').value = value;
+            updatePrice(value);
+          });
+        }
+        // initialize price display
+        if (planSelect) updatePrice(planSelect.value);
+      })();
+
+      // CNPJ lookup/formatting removed — field not present in form
+
+      // Phone formatting by DDI
+      const ddiSelect = document.getElementById('ddiSelect');
+      const telefoneInput = document.getElementById('telefoneInput');
+
+      function formatPhoneByDDI(ddi, raw) {
+        const d = raw.replace(/\D/g, '');
+        if (!ddi) return raw;
+        // Brazil (+55): expect area code 2 digits + number (8 or 9 digits)
+        if (ddi === '55') {
+          if (d.length === 0) return '';
+          if (d.length <= 2) return `(${d}`;
+          const area = d.slice(0,2);
+          const rest = d.slice(2);
+          if (rest.length <= 4) return `(${area}) ${rest}`;
+          if (rest.length <= 9) return `(${area}) ${rest.slice(0,rest.length-4)}-${rest.slice(-4)}`;
+          return `(${area}) ${rest.slice(0,rest.length-4)}-${rest.slice(-4)}`;
+        }
+        // US (+1): format (000) 000-0000 for up to 10 digits
+        if (ddi === '1') {
+          if (d.length <= 3) return `(${d}`;
+          if (d.length <= 6) return `(${d.slice(0,3)}) ${d.slice(3)}`;
+          return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6,10)}`;
+        }
+        // Portugal +351 / Spain +34 / Argentina +54: simple grouping
+        if (ddi === '351' || ddi === '34' || ddi === '54') {
+          if (d.length <= 3) return d;
+          if (d.length <= 6) return `${d.slice(0,3)} ${d.slice(3)}`;
+          return `${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6,10)}`;
+        }
+        return raw;
+      }
+
+      // map DDI to maximum digits (area + number) expected for the local national number
+      function getMaxDigitsForDDI(ddi){
+        const map = {
+          '55': 11, // BR: 2 area + 9 number
+          '1': 10,  // US/CA: 10 digits
+          '351': 9, // PT: 9
+          '34': 9,  // ES: 9
+          '33': 9,  // FR: 9
+          '44': 10, // UK: usually 10
+          '49': 11, // DE: up to 11
+          '39': 10, // IT: 10
+          '52': 10, // MX
+          '54': 10, // AR
+          '56': 9,  // CL
+          '57': 10, // CO
+          '51': 9,  // PE
+          '598': 8, // UY
+          '58': 10, // VE
+          '61': 9,  // AU
+          '86': 11, // CN
+          '81': 10, // JP
+          '91': 10, // IN
+          '27': 9,  // ZA
+          '31': 9,  // NL
+          '32': 9,  // BE
+          '41': 9,  // CH
+          '46': 9   // SE
+        };
+        return map[String(ddi)] || 11;
+      }
+
+      function computeTelefonePlaceholder(ddi) {
+        // We intentionally keep the phone placeholder empty per UX request
+        return '';
+      }
+
+      function updateTelefonePlaceholder() {
+        telefoneInput.placeholder = '';
+      }
+
+        if (ddiSelect && telefoneInput) {
+        ddiSelect.addEventListener('change', ()=>{
+          updateTelefonePlaceholder();
+          // reformat existing value according to new DDI limits
+          const formatted = formatPhoneByDDI(ddiSelect.value, telefoneInput.value || '');
+          telefoneInput.value = formatted || '';
+        });
+
+        telefoneInput.addEventListener('input', (e)=>{
+          const ddi = ddiSelect.value;
+          // enforce max digits per country and then format
+          const max = getMaxDigitsForDDI(ddi);
+          let digits = (e.target.value || '').replace(/\D/g, '');
+          if (typeof max === 'number') digits = digits.slice(0, max);
+          const formatted = formatPhoneByDDI(ddi, digits);
+          e.target.value = formatted;
+        });
+        // no visible placeholder by default
+        updateTelefonePlaceholder();
+        // ensure input starts empty
+        telefoneInput.value = '';
+      }
+
+        const form = document.getElementById('registerForm');
+      const status = document.getElementById('status');
+
+      // Password strength evaluation
+      function evaluatePassword(pwd){
+        let score = 0;
+        if (!pwd) return {score:0,label:'',color:'crimson'};
+        if (pwd.length >= 6) score++;
+        if (/[A-Z]/.test(pwd)) score++;
+        if (/\d/.test(pwd)) score++;
+        if (/[^A-Za-z0-9]/.test(pwd)) score++;
+        let label=''; let color='crimson';
+        if (score <= 1){ label='Fraca'; color='crimson'; }
+        else if (score === 2){ label='Média'; color='#f59e0b'; }
+        else { label='Forte'; color='#10b981'; }
+        return { score, label, color };
+      }
+
+      const pwdInput = document.getElementById('senha');
+      const pwdBar = document.getElementById('passwordStrengthBar');
+      const pwdText = document.getElementById('passwordStrengthText');
+      if (pwdInput){
+        pwdInput.addEventListener('input', (e)=>{
+          const val = e.target.value || '';
+          const info = evaluatePassword(val);
+          const pct = Math.min(100, (info.score/4)*100);
+          if (pwdBar) { pwdBar.style.width = pct + '%'; pwdBar.style.background = info.color; }
+          if (pwdText) {
+            if (!val) pwdText.textContent = 'Use ao menos 6 caracteres, 1 letra maiúscula, 1 número e 1 caracter especial.';
+            else pwdText.textContent = `Força: ${info.label}`;
+          }
+        });
+      }
+
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        status.textContent = '';
+        const senha = document.getElementById('senha').value;
+        const confirmar = document.getElementById('confirmar_senha').value;
+        // validation: 1 uppercase, 1 number, 1 special, min 6
+        const validRe = /(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}/;
+        if (!validRe.test(senha)){
+          status.textContent = 'Senha inválida: precisa ter 1 letra maiúscula, 1 número, 1 caracter especial e mínimo 6 caracteres.';
+          status.style.color = 'crimson';
+          return;
+        }
+        if (senha !== confirmar) {
+          status.textContent = 'As senhas não conferem';
+          status.style.color = 'crimson';
+          return;
+        }
+        status.textContent = 'Enviando...';
+        const data = Object.fromEntries(new FormData(form).entries());
+        try{
+          const baseUrl = window.FUNCTIONS_BASE_URL || window.BACKEND_URL || '';
+          const endpoint = baseUrl ? baseUrl + (window.FUNCTIONS_BASE_URL ? '/register' : '/auth/register') : '/auth/register';
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const body = await res.json().catch(()=>({}));
+          if (!res.ok) {
+            status.textContent = body.error || 'Erro ao registrar';
+            status.style.color = 'crimson';
+            return;
+          }
+          status.textContent = 'Registrado — verifique o e-mail para confirmar.';
+          status.style.color = 'green';
+          if (body.mail && body.mail.confirmUrl) {
+            const a = document.createElement('a');
+            a.href = body.mail.confirmUrl;
+            a.textContent = 'Abrir link de confirmação (dev)';
+            a.target = '_blank';
+            a.style.display = 'block';
+            a.style.marginTop = '8px';
+            status.parentNode.appendChild(a);
+          }
+          form.reset();
+          if (pwdBar){ pwdBar.style.width='0%'; }
+          if (pwdText){ pwdText.textContent = 'Use ao menos 6 caracteres, 1 letra maiúscula, 1 número e 1 caracter especial.'; }
+        }catch(err){
+          console.error(err);
+          status.textContent = 'Falha ao registrar';
+          status.style.color = 'crimson';
+        }
+      });
+    </script>
+  </body>
+</html>

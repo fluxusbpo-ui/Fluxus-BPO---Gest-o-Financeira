@@ -1,0 +1,80 @@
+{
+  "plans": [
+    {
+      "name": "FREE",
+      "price": "R$0",
+      "limits": {
+        "max_companies": 1,
+        "max_users": 2
+      },
+      "extra_company_price": null,
+      "features": {
+        "gestao_vendas_crm": true,
+        "gestao_compras": true,
+        "gestao_financeira": true,
+        "conciliacao_bancaria_integrada": false,
+        "relatorios_avancados": false,
+        "gestao_documentos_fiscais": false,
+        "ia_analise_gp_insights": false,
+        "suporte_prioritario_sla": false
+      }
+    },
+    {
+      "name": "ESSENCIAL",
+      "price": "R$99 / mês",
+      "limits": {
+        "max_companies": 1,
+        "max_users": 3
+      },
+      "extra_company_price": "R$50",
+      "features": {
+        "gestao_vendas_crm": true,
+        "gestao_compras": true,
+        "gestao_financeira": true,
+        "conciliacao_bancaria_integrada": true,
+        "relatorios_avancados": true,
+        "gestao_documentos_fiscais": true,
+        "ia_analise_gp_insights": false,
+        "suporte_prioritario_sla": false
+      }
+    },
+    {
+      "name": "PRO",
+      "price": "R$199 / mês",
+      "limits": {
+        "max_companies": 5,
+        "max_users": 10
+      },
+      "extra_company_price": "R$35",
+      "features": {
+        "gestao_vendas_crm": true,
+        "gestao_compras": true,
+        "gestao_financeira": true,
+        "conciliacao_bancaria_integrada": true,
+        "relatorios_avancados": true,
+        "gestao_documentos_fiscais": true,
+        "ia_analise_gp_insights": true,
+        "suporte_prioritario_sla": false
+      }
+    },
+    {
+      "name": "ENTERPRISE",
+      "price": "R$499 / mês",
+      "limits": {
+        "max_companies": 20,
+        "max_users": null
+      },
+      "extra_company_price": "R$15",
+      "features": {
+        "gestao_vendas_crm": true,
+        "gestao_compras": true,
+        "gestao_financeira": true,
+        "conciliacao_bancaria_integrada": true,
+        "relatorios_avancados": true,
+        "gestao_documentos_fiscais": true,
+        "ia_analise_gp_insights": true,
+        "suporte_prioritario_sla": true
+      }
+    }
+  ]
+}
