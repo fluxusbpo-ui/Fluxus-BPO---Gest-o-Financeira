@@ -33,6 +33,8 @@ Passos recomendados para migrar o backend (SQLite/Knex) para Supabase Postgres.
 6) Deploy
    - Use `supabase functions deploy` para Edge Functions (se você optar por portar controllers).
       - Aplique também as políticas RLS adicionadas em `supabase/migrations/20251206_rls_policies.sql` para configurar Row Level Security nas tabelas principais.
+         - Importante: políticas RLS frequentemente referenciam funções como `auth.uid()` e dependem do serviço Auth estar disponível. Para evitar erros de inicialização, aplique essas migrações em um ambiente de produção ou staging após o Auth estar operacional.
+         - Para reabilitar RLS localmente para testes, execute as migrações diretamente apontando para sua URL/Postgres local com a `SUPABASE_SERVICE_ROLE_KEY` (evite expor essa chave publicamente; rotacione caso ela vaze).
 
    Functions
       - Edge Functions to replace backend controllers are in `supabase/functions/` (register, login, companies, plans, stripe_webhook).
