@@ -23,34 +23,84 @@ jobs:
           echo "SUPABASE_URL=$SUPABASE_URL"
           echo "PG_CONN=${PG_CONN}" | sed -E 's/(password=)[^ ]+/\1***REDACTED***/g'
           echo "Resolving DNS records for DB host..."
-          host=$(echo "$PG_CONN" | sed -E 's@.*@(.*):(.*)@\1@' | sed -E 's@.*//@@' | sed -E 's/:.*$//' )
+          host=$(echo "$PG_CONN" | sed -E 's@.*//([^:/]+).*@\1@')
           echo "DB host: $host"
-          apt-get update && apt-get install -y dnsutils iproute2 netcat
-          echo "A records:"; dig +short A $host || true
-          echo "AAAA records:"; dig +short AAAA $host || true
-          echo "Connectivity checks:";
-          echo "  IPv4 (psql -4) ->"; psql -4 -c '\l' "$PG_CONN" >/dev/null 2>&1 && echo "OK (IPv4)" || echo "FAILED (IPv4)";
-          echo "  IPv6 (psql -6) ->"; psql -6 -c '\l' "$PG_CONN" >/dev/null 2>&1 && echo "OK (IPv6)" || echo "FAILED (IPv6)";
+          sudo apt-get update && sudo apt-get install -y dnsutils iproute2 netcat
+          echo "A records:"; A=$(dig +short A $host | head -n1) || true; echo "$A"
+          echo "AAAA records:"; AAAA=$(dig +short AAAA $host | head -n1) || true; echo "$AAAA"
+          echo "Parsing PG_CONN for credentials and database..."
+          userpass_host_db=$(echo "$PG_CONN" | sed -E 's@^[^/]+//@@')
+          userpass=$(echo "$userpass_host_db" | cut -d'@' -f1)
+          hostportdb=$(echo "$userpass_host_db" | cut -d'@' -f2)
+          username=$(echo "$userpass" | cut -d: -f1)
+          password=$(echo "$userpass" | cut -d: -f2-)
+          hostport=$(echo "$hostportdb" | cut -d/ -f1)
+          dbname=$(echo "$hostportdb" | cut -d/ -f2-)
+          port=$(echo "$hostport" | cut -d: -f2)
+          echo "  Parsed user=${username} db=${dbname} port=${port}"
+          export PGPASSWORD="$password"
+          if [ -n "$A" ]; then
+            echo "Testing IPv4 connectivity to $A:$port"
+            if nc -vz -w 5 $A $port >/dev/null 2>&1; then
+              echo "OK (IPv4 reachable)"
+              echo "DB_REACHABLE=ipv4" >> $GITHUB_ENV
+              echo "DB_IPV4=$A" >> $GITHUB_ENV
+            else
+              echo "IPv4 not reachable"
+            fi
+          fi
+          if [ -n "$AAAA" ]; then
+            echo "Testing IPv6 connectivity to $AAAA:$port"
+            if nc -vz -w 5 -6 $AAAA $port >/dev/null 2>&1; then
+              echo "OK (IPv6 reachable)"
+              echo "DB_REACHABLE=ipv6" >> $GITHUB_ENV
+              echo "DB_IPV6=$AAAA" >> $GITHUB_ENV
+            else
+              echo "IPv6 not reachable"
+            fi
+          fi
+          if [ -z "${DB_REACHABLE:-}" ]; then
+            echo "DB not reachable from runner (no IPv4/IPv6). Exiting with failure."
+            exit 1
+          fi
 
       - name: Apply SQL migrations
         run: |
-          # Force IPv4 and stop on error for clearer failures on GitHub Actions runners
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120301_create_empresas.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120302_create_planos.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120303_create_usuarios.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120304_create_assinaturas.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120402_add_email_tokens_and_flag.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120305_update_planos_schema.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120501_add_cpf_to_usuarios.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120502_add_owner_empresa_to_empresas.sql"
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120401_add_checkout_sessionid_to_assinaturas.sql"
+          set -euo pipefail
+          # Parse PG_CONN for credentials and DB
+          userpass_host_db=$(echo "$PG_CONN" | sed -E 's@^[^/]+//@@')
+          userpass=$(echo "$userpass_host_db" | cut -d'@' -f1)
+          hostportdb=$(echo "$userpass_host_db" | cut -d'@' -f2)
+          username=$(echo "$userpass" | cut -d: -f1)
+          password=$(echo "$userpass" | cut -d: -f2-)
+          hostport=$(echo "$hostportdb" | cut -d/ -f1)
+          dbname=$(echo "$hostportdb" | cut -d/ -f2-)
+          port=$(echo "$hostport" | cut -d: -f2)
+          export PGPASSWORD="$password"
+          if [ "${DB_REACHABLE:-}" = "ipv4" ]; then
+            hostip="$DB_IPV4"
+          elif [ "${DB_REACHABLE:-}" = "ipv6" ]; then
+            hostip="$DB_IPV6"
+          else
+            echo "No reachable DB IP found, aborting"; exit 1
+          fi
+          echo "Connecting to DB via host ip: $hostip port: $port user: $username db: $dbname"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120301_create_empresas.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120302_create_planos.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120303_create_usuarios.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120304_create_assinaturas.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120402_add_email_tokens_and_flag.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120305_update_planos_schema.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120501_add_cpf_to_usuarios.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120502_add_owner_empresa_to_empresas.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120401_add_checkout_sessionid_to_assinaturas.sql"
           if [ "${APPLY_RLS}" = "true" ]; then
             echo "Applying RLS policies (APPLY_RLS=true)"
-            psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120601_rls_policies.sql"
+            psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120601_rls_policies.sql"
           else
             echo "Skipping RLS policies (set secret APPLY_RLS=true to apply)"
           fi
-          psql -4 -v ON_ERROR_STOP=1 "$PG_CONN" -f "supabase/migrations/2025120602_add_data_to_empresas.sql"
+          psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120602_add_data_to_empresas.sql"
 
       - name: Import data from SQLite to Postgres
         env:
