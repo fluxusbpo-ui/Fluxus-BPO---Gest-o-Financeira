@@ -106,7 +106,8 @@ jobs:
               PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's@https?://@@' | cut -d '.' -f1)
             fi
             echo "Using Project ref: $PROJECT_REF"
-            supabase login --access-token "$SUPABASE_ACCESS_TOKEN"
+            # use supported flag name for token
+            supabase login --token "$SUPABASE_ACCESS_TOKEN"
             supabase link --project-ref "$PROJECT_REF"
             # Push local migrations using supabase CLI
             supabase db push --project-ref "$PROJECT_REF" --no-verify || {
