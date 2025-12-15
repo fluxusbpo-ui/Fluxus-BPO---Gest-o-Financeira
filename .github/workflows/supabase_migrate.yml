@@ -89,9 +89,20 @@ jobs:
             hostip="$DB_IPV6"
           else
             echo "No reachable DB IP found, attempting Supabase CLI fallback"
-            # Install supabase CLI via npm and attempt to push migrations using the CLI
-            npm install -g supabase
-            PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's@https?://@@' | cut -d '.' -f1)
+            # Install supabase CLI via supported installer (deb/tarball)
+            echo "Installing Supabase CLI via supported installer..."
+            (curl -sL https://deb.supabase.com/cli/install | sh) || (
+              echo "deb installer failed, trying tarball..." && curl -sL "https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin supabase
+            ) || { echo "Failed to install Supabase CLI"; exit 1; }
+            # Determine project ref
+            if [ -n "${SUPABASE_PROJECT_REF:-}" ]; then
+              PROJECT_REF="$SUPABASE_PROJECT_REF"
+            else
+              if [ -z "${SUPABASE_URL:-}" ]; then
+                echo "SUPABASE_URL or SUPABASE_PROJECT_REF must be set for Supabase CLI fallback"; exit 1
+              fi
+              PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's@https?://@@' | cut -d '.' -f1)
+            fi
             echo "Using Project ref: $PROJECT_REF"
             supabase login --access-token "$SUPABASE_ACCESS_TOKEN"
             supabase link --project-ref "$PROJECT_REF"
