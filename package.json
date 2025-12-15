@@ -6,9 +6,14 @@
     "do:frontend": "node ./scripts/run-frontend.js"
     ,"smoke:functions": "node ./scripts/smoke_test_functions.js"
     ,"serve:functions": "supabase functions serve"
+    ,"github:set-secrets": "node ./scripts/set_github_secrets.js"
+    ,"github:create-pr": "node ./scripts/create_pr.js"
+    ,"github:dispatch-migrate": "node ./scripts/dispatch_workflow.js"
+    ,"github:dispatch-deploy": "node ./scripts/dispatch_workflow.js"
   },
   "dependencies": {
       "bcryptjs": "^2.4.3",
-      "node-fetch": "^2.6.7"
+      "node-fetch": "^2.6.7",
+      "libsodium-wrappers-sumo": "^0.7.2"
     }
 }

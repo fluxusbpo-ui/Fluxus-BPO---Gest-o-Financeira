@@ -17,7 +17,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y sqlite3 postgresql-client
+          sudo apt-get install -y sqlite3 postgresql-client dnsutils iproute2 netcat-openbsd
 
       - name: Diagnose DB connectivity
         run: |
@@ -26,7 +26,7 @@ jobs:
           echo "Resolving DNS records for DB host..."
           host=$(echo "$PG_CONN" | sed -E 's@.*//([^:/]+).*@\1@')
           echo "DB host: $host"
-          sudo apt-get update && sudo apt-get install -y dnsutils iproute2 netcat
+          echo "Using installed tools: dig, ip, nc"
           echo "A records:"; A=$(dig +short A $host | head -n1) || true; echo "$A"
           echo "AAAA records:"; AAAA=$(dig +short AAAA $host | head -n1) || true; echo "$AAAA"
           echo "Parsing PG_CONN for credentials and database..."
@@ -54,15 +54,20 @@ jobs:
             echo "Testing IPv6 connectivity to $AAAA:$port"
             if nc -vz -w 5 -6 $AAAA $port >/dev/null 2>&1; then
               echo "OK (IPv6 reachable)"
-              echo "DB_REACHABLE=ipv6" >> $GITHUB_ENV
+              # If IPv4 already set as reachable, mark both reachable
+              if [ "${DB_REACHABLE:-}" = "ipv4" ]; then
+                echo "DB_REACHABLE=both" >> $GITHUB_ENV
+              else
+                echo "DB_REACHABLE=ipv6" >> $GITHUB_ENV
+              fi
               echo "DB_IPV6=$AAAA" >> $GITHUB_ENV
             else
               echo "IPv6 not reachable"
             fi
           fi
           if [ -z "${DB_REACHABLE:-}" ]; then
-            echo "DB not reachable from runner (no IPv4/IPv6). Exiting with failure."
-            exit 1
+            echo "DB not reachable from runner (no IPv4/IPv6). Will attempt Supabase CLI fallback later."
+            echo "DB_REACHABLE=none" >> $GITHUB_ENV
           fi
 
       - name: Apply SQL migrations
@@ -78,11 +83,8 @@ jobs:
           dbname=$(echo "$hostportdb" | cut -d/ -f2-)
           port=$(echo "$hostport" | cut -d: -f2)
           export PGPASSWORD="$password"
-          if [ "${DB_REACHABLE:-}" = "ipv4" ] || [ "${DB_REACHABLE:-}" = "ipv6" ]; then
+          if [ "${DB_REACHABLE:-}" = "ipv4" ] || [ "${DB_REACHABLE:-}" = "both" ]; then
             hostip="$DB_IPV4"
-            if [ "${DB_REACHABLE:-}" = "ipv6" ]; then
-              hostip="$DB_IPV6"
-            fi
           elif [ "${DB_REACHABLE:-}" = "ipv6" ]; then
             hostip="$DB_IPV6"
           else
