@@ -139,4 +139,11 @@ jobs:
       - name: Import data from SQLite to Postgres
         env:
           PG_CONN: ${{ secrets.PG_CONN }}
-        run: bash scripts/ci_migrate.sh
+        run: |
+          if [ "${DB_REACHABLE:-}" = "none" ]; then
+            echo "DB not reachable from runner; skipping SQLite import. Run import from environment with DB access or use supabase APIs to seed data."
+          else
+            bash scripts/ci_migrate.sh
+          fi
+        # If runner cannot reach DB, skip import (we already applied migrations via CLI fallback)
+        if: always()
