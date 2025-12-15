@@ -111,9 +111,12 @@ jobs:
             supabase link --project-ref "$PROJECT_REF"
             # Push local migrations using supabase CLI
             # push to linked project (no --no-verify flag in this CLI version)
-            supabase db push --linked || {
+            if supabase db push --linked; then
+              echo "Supabase CLI applied migrations successfully; skipping local psql steps."
+              exit 0
+            else
               echo "Supabase CLI fallback failed"; exit 1
-            }
+            fi
           fi
           echo "Connecting to DB via host ip: $hostip port: $port user: $username db: $dbname"
           psql -h "$hostip" -p "$port" -U "$username" -d "$dbname" -v ON_ERROR_STOP=1 -f "supabase/migrations/2025120301_create_empresas.sql"
